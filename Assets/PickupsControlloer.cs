@@ -16,16 +16,18 @@ public class PickupsControlloer : MonoBehaviour {
 		
 	}
 
-	void OnCollisionEnter2D(Collision2D collisionInfo)
+	void OnCollisionEnter2D(Collision2D collision)
 	{
-		Vector2 contactPoint = collisionInfo.contacts[0].point;
-		tilemap.SetTile(new Vector3Int((int)contactPoint.x,
-						(int)contactPoint.y-1,
-						0), null);
+		Vector3 hitPosition = Vector3.zero;
+        if (tilemap != null && collision.collider.name == "Player")
+        {
+            foreach (ContactPoint2D hit in collision.contacts)
+            {
+                hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
+                hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
+                tilemap.SetTile(tilemap.WorldToCell(hitPosition), null);
+            }
+        }
 	}
-	void OnTriggerEnter2D(Collider2D other)
-	{
-		
-		
-	}
+
 }
