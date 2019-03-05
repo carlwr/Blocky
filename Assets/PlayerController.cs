@@ -78,6 +78,7 @@ public class PlayerController : MonoBehaviour {
 		orientation = new Vector2(0,0);
 		if (Input.GetKey("w") && jump)
         {
+			
 			orientation += new Vector2(0,1) * jumpForce;
 			jump = false;
         }
