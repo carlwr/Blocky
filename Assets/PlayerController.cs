@@ -78,9 +78,9 @@ public class PlayerController : MonoBehaviour {
 		orientation = new Vector2(0,0);
 		if (Input.GetKey("w") && jump)
         {
+				orientation += new Vector2(0,1) * jumpForce;
+				jump = false;
 			
-			orientation += new Vector2(0,1) * jumpForce;
-			jump = false;
         }
 		if (Input.GetKey("a"))
         {	
@@ -139,7 +139,10 @@ public class PlayerController : MonoBehaviour {
 	void OnCollisionStay2D(Collision2D collisionInfo)
 	{
 		if(collisionInfo.collider.name == "Plattform"){
+			
+				
 			jump = true;
+			
 		}
 	}
 	void OnCollisionEnter2D(Collision2D other)
