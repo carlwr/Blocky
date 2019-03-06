@@ -20,7 +20,7 @@ public class PickupController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
     {
-        
+        Debug.Log("BEEP");
         Vector3 hitPosition = Vector3.zero;
         if (tilemap != null && collisionInfo.collider.name == "Player")
         {
