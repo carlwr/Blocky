@@ -13,7 +13,6 @@ public class PlayerController : MonoBehaviour {
 	public State state;
 	private Vector3Int lastAddedTile;
 	private bool chooseNextBox;
-	public bool jump;
 
 	public float jumpForce;
 	public Tilemap tm;
@@ -21,9 +20,10 @@ public class PlayerController : MonoBehaviour {
 	public Tilemap nextTiles;
 	public float speed;
 	public Vector2 orientation;
-	public Rigidbody2D rb2d; 
-	// Use this for initialization
-	void Start () {
+	public Rigidbody2D rb2d;
+    private float canJump = 0f;
+    // Use this for initialization
+    void Start () {
 		tm = GetComponent<Tilemap>();
 		rb2d = GetComponent<Rigidbody2D> ();
 		state = State.NORMAL;
@@ -32,20 +32,27 @@ public class PlayerController : MonoBehaviour {
 	
 	void FixedUpdate()
 	{
+        
+        if (orientation != new Vector2(0, 0))
+        {
+            Debug.Log(orientation);
+        }
 		rb2d.AddForce (orientation * speed);
-	}
+        switch (state)
+        {
+            case State.NORMAL:
+                normalUpdate();
+                break;
+            case State.ADD_TILE:
+                addTileUpdate();
+                break;
+        }
+    }
 
 	// Update is called once per frame
 	void Update () {
 		
-		switch(state){
-			case State.NORMAL:
-				normalUpdate();
-				break;
-			case State.ADD_TILE:
-				addTileUpdate();
-				break;
-		}
+		
 	}
 
 	void showTilesToChoose(){
@@ -76,10 +83,23 @@ public class PlayerController : MonoBehaviour {
 
 	void normalUpdate(){
 		orientation = new Vector2(0,0);
-		if (Input.GetKey("w") && jump)
+		if (Input.GetKey("w"))
         {
+<<<<<<< HEAD
+            if (Time.time > canJump && rb2d.velocity.y >= 0)
+            {
+                Debug.Log("velocity " + rb2d.velocity);
+                orientation += new Vector2(0, 1) * jumpForce;
+                Debug.Log("ori " + orientation);
+                canJump = Time.time + 0.4f;
+                Debug.Log("Jump!");
+            }
+            
+			
+=======
 				orientation += new Vector2(0,1) * jumpForce;
 				jump = false;
+>>>>>>> 9330a3ca780a106bad5d85a37f29c47226e72775
         }
 		if (Input.GetKey("a"))
         {	
@@ -137,9 +157,17 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionStay2D(Collision2D collisionInfo)
 	{
+<<<<<<< HEAD
+		if(collisionInfo.collider.name == "Plattform"){
+			
+				
+			//jump = true;
+			
+=======
         Debug.Log(collisionInfo.contacts[0].normal);
         if (collisionInfo.collider.name == "Plattform"){
 			jump = true;
+>>>>>>> 9330a3ca780a106bad5d85a37f29c47226e72775
 		}
 	}
 	void OnCollisionEnter2D(Collision2D other)
