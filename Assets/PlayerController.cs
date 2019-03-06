@@ -5,12 +5,12 @@ using UnityEngine.Tilemaps;
 
 public class PlayerController : MonoBehaviour {
 
-	private enum State{
+	public enum State{
 		NORMAL,
 		ADD_TILE
 	}
 
-	private State state;
+	public State state;
 	private Vector3Int lastAddedTile;
 	private bool chooseNextBox;
 	public bool jump;
@@ -80,7 +80,6 @@ public class PlayerController : MonoBehaviour {
         {
 				orientation += new Vector2(0,1) * jumpForce;
 				jump = false;
-			
         }
 		if (Input.GetKey("a"))
         {	
@@ -138,16 +137,16 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionStay2D(Collision2D collisionInfo)
 	{
-		if(collisionInfo.collider.name == "Plattform"){
-			
-				
+        Debug.Log(collisionInfo.contacts[0].normal);
+        if (collisionInfo.collider.name == "Plattform"){
 			jump = true;
-			
 		}
 	}
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		
+
+        
+
 		if(other.collider.tag == "Pickups"){
 			orientation = new Vector3(0,0,0);
 			state = State.ADD_TILE;
