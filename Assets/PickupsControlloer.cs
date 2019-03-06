@@ -19,8 +19,10 @@ public class PickupsControlloer : MonoBehaviour {
 	void OnCollisionEnter2D(Collision2D collision)
 	{
 		Vector3 hitPosition = Vector3.zero;
-        if (tilemap != null && collision.collider.name == "Player")
+        
+        if (tilemap != null && collision.collider.gameObject.GetComponent<PlayerController>() != null)
         {
+            Debug.Log("Collision");
             foreach (ContactPoint2D hit in collision.contacts)
             {
                 hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
