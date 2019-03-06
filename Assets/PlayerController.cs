@@ -35,8 +35,13 @@ public class PlayerController : MonoBehaviour {
 	
 	void FixedUpdate()
 	{
+        if(Input.GetKeyDown(KeyCode.R))
+        {
+            Application.LoadLevel(Application.loadedLevel);
+        }
 
-		rb2d.AddForce (orientation * speed);
+
+        rb2d.AddForce (orientation * speed);
         switch (state)
         {
             case State.NORMAL:
@@ -174,14 +179,6 @@ public class PlayerController : MonoBehaviour {
 				state = State.NORMAL;
 			}
 		}
-		
-	}
-
-	void OnCollisionStay2D(Collision2D collisionInfo)
-	{
-		if(collisionInfo.collider.name == "Plattform"){
-		}
-			
 		
 	}
 
