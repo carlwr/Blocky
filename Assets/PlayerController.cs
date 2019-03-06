@@ -85,7 +85,6 @@ public class PlayerController : MonoBehaviour {
 		orientation = new Vector2(0,0);
 		if (Input.GetKey("w"))
         {
-<<<<<<< HEAD
             if (Time.time > canJump && rb2d.velocity.y >= 0)
             {
                 Debug.Log("velocity " + rb2d.velocity);
@@ -96,10 +95,8 @@ public class PlayerController : MonoBehaviour {
             }
             
 			
-=======
-				orientation += new Vector2(0,1) * jumpForce;
-				jump = false;
->>>>>>> 9330a3ca780a106bad5d85a37f29c47226e72775
+
+
         }
 		if (Input.GetKey("a"))
         {	
@@ -157,17 +154,12 @@ public class PlayerController : MonoBehaviour {
 
 	void OnCollisionStay2D(Collision2D collisionInfo)
 	{
-<<<<<<< HEAD
 		if(collisionInfo.collider.name == "Plattform"){
 			
 				
 			//jump = true;
 			
-=======
-        Debug.Log(collisionInfo.contacts[0].normal);
-        if (collisionInfo.collider.name == "Plattform"){
-			jump = true;
->>>>>>> 9330a3ca780a106bad5d85a37f29c47226e72775
+
 		}
 	}
 	void OnCollisionEnter2D(Collision2D other)
