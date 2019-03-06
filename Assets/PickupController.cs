@@ -20,16 +20,15 @@ public class PickupController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collisionInfo)
     {
-        Debug.Log("BEEP");
         Vector3 hitPosition = Vector3.zero;
-        if (tilemap != null && collisionInfo.collider.name == "Player")
+        if (tilemap != null && collisionInfo.collider.gameObject.GetComponent<PlayerController>() != null)
         {
             foreach(ContactPoint2D hit in collisionInfo.contacts){
                 hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
                 print(tilemap.WorldToCell(hitPosition));
                 
-                //tilemap.SetTile(tilemap.WorldToCell(hitPosition), null);
+                tilemap.SetTile(tilemap.WorldToCell(hitPosition), null);
                 //break;
             }
            
