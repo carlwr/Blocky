@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
 	public State state;
 	private Vector3Int lastAddedTile;
 	private bool chooseNextBox;
+	private bool jump;
 
 	public float jumpForce;
 	public Tilemap tm;
@@ -28,15 +29,12 @@ public class PlayerController : MonoBehaviour {
 		rb2d = GetComponent<Rigidbody2D> ();
 		state = State.NORMAL;
 		lastAddedTile = new Vector3Int(0,0,0);
+		jump = false;
 	}
 	
 	void FixedUpdate()
 	{
         
-        if (orientation != new Vector2(0, 0))
-        {
-            Debug.Log(orientation);
-        }
 		rb2d.AddForce (orientation * speed);
         switch (state)
         {
@@ -83,15 +81,13 @@ public class PlayerController : MonoBehaviour {
 
 	void normalUpdate(){
 		orientation = new Vector2(0,0);
-		if (Input.GetKey("w"))
+		if (Input.GetKeyDown("w"))
         {
-            if (Time.time > canJump && rb2d.velocity.y >= 0)
+            if (Time.time > canJump && rb2d.velocity.y >= 0 || jump)
             {
-                Debug.Log("velocity " + rb2d.velocity);
                 orientation += new Vector2(0, 1) * jumpForce;
-                Debug.Log("ori " + orientation);
                 canJump = Time.time + 0.4f;
-                Debug.Log("Jump!");
+				jump = false;
             }
             
 			
@@ -155,18 +151,19 @@ public class PlayerController : MonoBehaviour {
 	void OnCollisionStay2D(Collision2D collisionInfo)
 	{
 		if(collisionInfo.collider.name == "Plattform"){
-			
-				
-			//jump = true;
-			
-
 		}
+			
+		
 	}
+
 	void OnCollisionEnter2D(Collision2D other)
 	{
 
-        
-
+        if(other.contacts[0].normal == new Vector2(1,0)||other.contacts[0].normal == new Vector2(-1,0))
+		{
+			jump = true;
+		}
+		
 		if(other.collider.tag == "Pickups"){
 			orientation = new Vector3(0,0,0);
 			state = State.ADD_TILE;
@@ -174,4 +171,6 @@ public class PlayerController : MonoBehaviour {
 		}
 		
 	}
+	
 }
+
