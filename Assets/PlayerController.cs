@@ -32,11 +32,6 @@ public class PlayerController : MonoBehaviour {
 	
 	void FixedUpdate()
 	{
-        
-        if (orientation != new Vector2(0, 0))
-        {
-            Debug.Log(orientation);
-        }
 		rb2d.AddForce (orientation * speed);
         switch (state)
         {
@@ -164,14 +159,19 @@ public class PlayerController : MonoBehaviour {
 	}
 	void OnCollisionEnter2D(Collision2D other)
 	{
-
-        
-
 		if(other.collider.tag == "Pickups"){
 			orientation = new Vector3(0,0,0);
 			state = State.ADD_TILE;
 			chooseNextBox = false;
 		}
-		
 	}
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.tag == "Pickups")
+        {
+            orientation = new Vector3(0, 0, 0);
+            state = State.ADD_TILE;
+            chooseNextBox = false;
+        }
+    }
 }

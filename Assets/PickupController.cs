@@ -33,7 +33,15 @@ public class PickupController : MonoBehaviour
             }
            
         }
-        
-        
+    }
+    
+    void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (tilemap != null && collider.gameObject.GetComponent<PlayerController>() != null)
+        {
+            Vector2 hitPosition = GetComponent<Collider2D>().ClosestPoint(collider.transform.position);
+            print(tilemap.GetTile(tilemap.WorldToCell(hitPosition)));
+            tilemap.SetTile(tilemap.WorldToCell(hitPosition), null);
+        }
     }
 }
