@@ -34,10 +34,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void FixedUpdate()
 	{
-<<<<<<< HEAD
-=======
-        
->>>>>>> 1706308486a5c61600587d7957b69c8cbe5894d3
+
 		rb2d.AddForce (orientation * speed);
         switch (state)
         {
