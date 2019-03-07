@@ -11,11 +11,12 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public State state;
+	public float maxJumpForce;
 	private Vector3Int lastAddedTile;
 	private bool chooseNextBox;
-	private bool jump;
+	public bool wallJump;
 
-	public float jumpForce;
+	public float jumpForce = 0;
 	public Tilemap tm;
 
 	public TileBase tb;
@@ -23,14 +24,16 @@ public class PlayerController : MonoBehaviour {
 	public float speed;
 	public Vector2 orientation;
 	public Rigidbody2D rb2d;
-    private float canJump = 0f;
+	public bool canJump;
+
+	
     // Use this for initialization
     void Start () {
 		tm = GetComponent<Tilemap>();
 		rb2d = GetComponent<Rigidbody2D> ();
 		state = State.NORMAL;
 		lastAddedTile = new Vector3Int(0,0,0);
-		jump = false;
+		wallJump = false;
 	}
 	
 	void FixedUpdate()
@@ -59,12 +62,10 @@ public class PlayerController : MonoBehaviour {
 		
 	}
 
+
 	void showTilesToChoose(){
 		
-		nextTiles.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1, 0), null);
-		nextTiles.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y - 1, 0), null);
-		nextTiles.SetTile(new Vector3Int(lastAddedTile.x+1, lastAddedTile.y, 0), null);
-		nextTiles.SetTile(new Vector3Int(lastAddedTile.x-1, lastAddedTile.y , 0), null);
+		nextTiles.ClearAllTiles();
 
 		Vector3 tilemapWorld = tm.CellToWorld(lastAddedTile);
 		tilemapWorld.x += 0.5f;
@@ -95,14 +96,21 @@ public class PlayerController : MonoBehaviour {
 		}
 	}
 
-	void removeTilesToShow(){
-			nextTiles.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1, 0), null);
-			nextTiles.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y - 1, 0), null);
-			nextTiles.SetTile(new Vector3Int(lastAddedTile.x+1, lastAddedTile.y, 0), null);
-			nextTiles.SetTile(new Vector3Int(lastAddedTile.x-1, lastAddedTile.y, 0), null);
-			
+	void jump(){
+		if ( canJump)
+		{
+			orientation += new Vector2(0, 1) * jumpForce;
+			jumpForce = 0;
+			wallJump = false;
+			canJump = false;
+		}
+		else if(wallJump){
+			orientation += new Vector2(0, 1) * 40;
+			jumpForce = 0;
+			wallJump = false;
+			canJump = false;
+		}
 	}
-
 	void normalUpdate(){
 
         //Make it not slow motion as soon as the block has been selected and state is normal again.
@@ -113,15 +121,18 @@ public class PlayerController : MonoBehaviour {
         }
 
 		orientation = new Vector2(0,0);
-		if (Input.GetKeyDown("w"))
+		if (Input.GetKey("w"))
         {
-            if (Time.time > canJump && rb2d.velocity.y >= 0 || jump)
-            {
-                orientation += new Vector2(0, 1) * jumpForce;
-                canJump = Time.time + 0.4f;
-				jump = false;
-            }
+          jumpForce += 2f;
+		  if(jumpForce > maxJumpForce){
+			  jumpForce = maxJumpForce;
+		  }
         }
+
+		if(Input.GetKeyUp("w")){
+			jump();
+		}
+
 		if (Input.GetKey("a"))
         {	
 			orientation += new Vector2(-1,0);
@@ -131,7 +142,6 @@ public class PlayerController : MonoBehaviour {
 			orientation += new Vector2(1,0);
         }
 	}
-
 	void addTileUpdate(){
 
         //When we are adding a tile, make everything slow-motion!
@@ -156,7 +166,8 @@ public class PlayerController : MonoBehaviour {
 			if (Input.GetKey("w") && 
 			hit.collider == null)
 			{
-				removeTilesToShow();
+				
+				nextTiles.ClearAllTiles();
 				lastAddedTile += new Vector3Int(0,1,0);
 				tm.SetTile(lastAddedTile,tb);
 				state = State.NORMAL;
@@ -165,7 +176,7 @@ public class PlayerController : MonoBehaviour {
 			Physics2D.Raycast(new Vector2(tilemapWorld.x+1, tilemapWorld.y),
 											 Vector2.right, 0.1f).collider	 == null)
 			{	
-				removeTilesToShow();
+				nextTiles.ClearAllTiles();
 				lastAddedTile += new Vector3Int(1,0,0);
 				tm.SetTile(lastAddedTile ,tb);
 				state = State.NORMAL;
@@ -174,7 +185,7 @@ public class PlayerController : MonoBehaviour {
 			Physics2D.Raycast(new Vector2(tilemapWorld.x-1, tilemapWorld.y),
 											 Vector2.left, 0.1f).collider == null)
 			{	
-				removeTilesToShow();
+				nextTiles.ClearAllTiles();
 				lastAddedTile += new Vector3Int(-1,0,0);
 				tm.SetTile(lastAddedTile ,tb);
 				
@@ -184,26 +195,35 @@ public class PlayerController : MonoBehaviour {
 			Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y - 1),
 											 Vector2.down, 0.1f).collider == null)
 			{	
-				removeTilesToShow();
+				nextTiles.ClearAllTiles();
 				lastAddedTile += new Vector3Int(0,-1,0);
 				tm.SetTile(lastAddedTile ,tb);
 				
 				state = State.NORMAL;
 			}
+			else{
+				jumpForce = 0;
+			}
 		}
 		
 	}
 
+	
 	void OnCollisionEnter2D(Collision2D other)
 	{
-
-
-        if(other.contacts[0].normal == new Vector2(1,0)||other.contacts[0].normal == new Vector2(-1,0))
+		if(other.contacts[0].normal == new Vector2(1,0)||other.contacts[0].normal == new Vector2(-1,0))
 		{
-			jump = true;
+			wallJump = true;
+		}
+	}
+
+	void OnCollisionStay2D(Collision2D other)
+	{
+		if(other.contacts[0].normal == new Vector2(0,1)){
+			canJump = true;
 		}
 		
-
+       
 	}
 
     void OnTriggerEnter2D(Collider2D other)
