@@ -104,6 +104,14 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void normalUpdate(){
+
+        //Make it not slow motion as soon as the block has been selected and state is normal again.
+        if(Time.timeScale != 1.0f)
+        {
+            Time.timeScale = 1.0f;
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        }
+
 		orientation = new Vector2(0,0);
 		if (Input.GetKeyDown("w"))
         {
@@ -113,10 +121,6 @@ public class PlayerController : MonoBehaviour {
                 canJump = Time.time + 0.4f;
 				jump = false;
             }
-            
-			
-
-
         }
 		if (Input.GetKey("a"))
         {	
@@ -129,6 +133,14 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void addTileUpdate(){
+
+        //When we are adding a tile, make everything slow-motion!
+        if(Time.timeScale == 1.0f)
+        {
+            Time.timeScale = 0.1f;
+            Time.fixedDeltaTime = 0.02f * Time.timeScale;
+        }
+
 		showTilesToChoose();
 		if(!Input.anyKey){
 			chooseNextBox = true;
