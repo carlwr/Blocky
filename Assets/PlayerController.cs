@@ -7,16 +7,19 @@ public class PlayerController : MonoBehaviour {
 
 	public enum State{
 		NORMAL,
-		ADD_TILE
+		ADD_TILE,
+        WALL_SLIDE
 	}
 
 	public State state;
-	public float maxJumpForce;
+	public float maxJumpForce = 30;
 	private Vector3Int lastAddedTile;
 	private bool chooseNextBox;
-	public bool wallJump;
+	//public bool wallJump;
+    public float maxWallSlideSpeed = 2;
+    public Vector2 wallNormal;
 
-	public float jumpForce = 0;
+    public float jumpForce = 0;
 	public Tilemap tm;
 
 	public TileBase tb;
@@ -33,7 +36,7 @@ public class PlayerController : MonoBehaviour {
 		rb2d = GetComponent<Rigidbody2D> ();
 		state = State.NORMAL;
 		lastAddedTile = new Vector3Int(0,0,0);
-		wallJump = false;
+		//wallJump = false;
 	}
 	
 	void FixedUpdate()
@@ -47,6 +50,7 @@ public class PlayerController : MonoBehaviour {
         rb2d.AddForce (orientation * speed);
         switch (state)
         {
+            case State.WALL_SLIDE:
             case State.NORMAL:
                 normalUpdate();
                 break;
@@ -55,13 +59,6 @@ public class PlayerController : MonoBehaviour {
                 break;
         }
     }
-
-	// Update is called once per frame
-	void Update () {
-		
-		
-	}
-
 
 	void showTilesToChoose(){
 		
@@ -97,19 +94,29 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void jump(){
-		if ( canJump)
+        if (state == State.WALL_SLIDE)
+        {
+            //Jump type 1: Player is holding in button towards wall.
+            if (orientation.x == -wallNormal.x)
+                orientation = new Vector2(0.3f * wallNormal.x, 1) * maxJumpForce;
+            //Jump type 2: player is pressing button in direction opposite to wall.
+            else if (orientation.x == wallNormal.x)
+                orientation = new Vector2(0.8f * wallNormal.x, 1) * maxJumpForce;
+            //Jump type 3: Player is not moving in x direction.
+            else
+                orientation += new Vector2(0, 1) * maxJumpForce;
+            jumpForce = 0;
+            state = State.NORMAL;
+            canJump = false;
+        }
+        else if ( canJump)
 		{
 			orientation += new Vector2(0, 1) * jumpForce;
 			jumpForce = 0;
-			wallJump = false;
+            state = State.NORMAL;
 			canJump = false;
 		}
-		else if(wallJump){
-			orientation += new Vector2(0, 1) * 40;
-			jumpForce = 0;
-			wallJump = false;
-			canJump = false;
-		}
+		
 	}
 	void normalUpdate(){
 
@@ -121,26 +128,37 @@ public class PlayerController : MonoBehaviour {
         }
 
 		orientation = new Vector2(0,0);
-		if (Input.GetKey("w"))
+
+
+        if (Input.GetKey("a"))
+        {
+            orientation += new Vector2(-1, 0);
+        }
+        if (Input.GetKey("d"))
+        {
+            orientation += new Vector2(1, 0);
+        }
+
+        if (Input.GetKeyUp("w"))
+        {
+            //This needs to be above the getkey(w) because it uses information set in the orientation above, which the block of code below nulls.
+            jump();
+        }
+        if (Input.GetKey("w"))
         {
           jumpForce += 2f;
 		  if(jumpForce > maxJumpForce){
 			  jumpForce = maxJumpForce;
 		  }
-        }
 
-		if(Input.GetKeyUp("w")){
-			jump();
-		}
-
-		if (Input.GetKey("a"))
-        {	
-			orientation += new Vector2(-1,0);
+          if(state == State.WALL_SLIDE)
+            {
+                //If we are sliding and holding in w, we do not want to stop sliding, this prevents that.
+                //TODO: make a less brittle implementation of this.
+                orientation.Set(0, 0);
+            }
         }
-		if (Input.GetKey("d"))
-        {
-			orientation += new Vector2(1,0);
-        }
+		
 	}
 	void addTileUpdate(){
 
@@ -208,18 +226,37 @@ public class PlayerController : MonoBehaviour {
 		
 	}
 
+    void wallSlideUpdate()
+    {
+        if(rb2d.velocity.y < -maxWallSlideSpeed)
+        {
+            rb2d.velocity.Set(rb2d.velocity.x, -maxWallSlideSpeed);
+        }
+        //Check for when no longer touching wall
+    }
+
 	
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if(other.contacts[0].normal == new Vector2(1,0)||other.contacts[0].normal == new Vector2(-1,0))
+		if(other.contacts[0].normal == new Vector2(1,0))
 		{
-			wallJump = true;
+            wallNormal = new Vector2(1,0);
+            state = State.WALL_SLIDE;
 		}
+        if(other.contacts[0].normal == new Vector2(-1, 0))
+        {
+            wallNormal = new Vector2(-1, 0);
+            state = State.WALL_SLIDE;
+        }
 	}
 
 	void OnCollisionStay2D(Collision2D other)
 	{
 		if(other.contacts[0].normal == new Vector2(0,1)){
+            if(state == State.WALL_SLIDE)
+            {
+                state = State.NORMAL;
+            }
 			canJump = true;
 		}
 		
