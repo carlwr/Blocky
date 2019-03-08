@@ -15,7 +15,11 @@ public class PlayerController : MonoBehaviour {
 	public float maxJumpForce = 30;
 	private Vector3Int lastAddedTile;
 	private bool chooseNextBox;
-	//public bool wallJump;
+    private float aButtonDown = 0;
+    private float wButtonDown = 0;
+    private float dButtonDown = 0;
+    private float sButtonDown = 0;
+    //public bool wallJump;
     public float maxWallSlideSpeed = 2;
     public Vector2 wallNormal;
 
@@ -186,48 +190,93 @@ public class PlayerController : MonoBehaviour {
 
 			RaycastHit2D hit = Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y + 1),
 											 Vector2.zero);
-			if (Input.GetKey("w") && 
-			hit.collider == null)
+            if (Input.GetKey("w") &&
+            hit.collider == null && aButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
 			{
-				
-				nextTiles.ClearAllTiles();
-				lastAddedTile += new Vector3Int(0,1,0);
-				tm.SetTile(lastAddedTile,tb);
-				state = State.NORMAL;
+                wButtonDown += 0.015f;
+                Debug.Log("wbuttondown: " + wButtonDown);
+                if (wButtonDown > 1)
+                {
+                    nextTiles.ClearAllTiles();
+                    lastAddedTile += new Vector3Int(0, 1, 0);
+                    tm.SetTile(lastAddedTile, tb);
+                    state = State.NORMAL;
+                    wButtonDown = 0;
+                }
+                
+
+                
 			}
 			else if (Input.GetKey("d") && 
 			Physics2D.Raycast(new Vector2(tilemapWorld.x+1, tilemapWorld.y),
-											 Vector2.right, 0.1f).collider	 == null)
-			{	
-				nextTiles.ClearAllTiles();
-				lastAddedTile += new Vector3Int(1,0,0);
-				tm.SetTile(lastAddedTile ,tb);
-				state = State.NORMAL;
+											 Vector2.right, 0.1f).collider	 == null && aButtonDown <= 0 && wButtonDown <= 0 && sButtonDown <= 0)
+			{
+                dButtonDown += 0.015f;
+                Debug.Log("dbuttondown: " + dButtonDown);
+                if (dButtonDown > 1)
+                {
+                    nextTiles.ClearAllTiles();
+                    lastAddedTile += new Vector3Int(1, 0, 0);
+                    tm.SetTile(lastAddedTile, tb);
+                    state = State.NORMAL;
+                    dButtonDown = 0;
+                }
+                    
 			}
 			else if (Input.GetKey("a") && 
 			Physics2D.Raycast(new Vector2(tilemapWorld.x-1, tilemapWorld.y),
-											 Vector2.left, 0.1f).collider == null)
-			{	
-				nextTiles.ClearAllTiles();
-				lastAddedTile += new Vector3Int(-1,0,0);
-				tm.SetTile(lastAddedTile ,tb);
-				
-				state = State.NORMAL;
+											 Vector2.left, 0.1f).collider == null && wButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
+			{
+                aButtonDown += 0.015f;
+                Debug.Log("abuttondown: " + aButtonDown);
+                if (aButtonDown > 1)
+                {
+                    nextTiles.ClearAllTiles();
+                    lastAddedTile += new Vector3Int(-1, 0, 0);
+                    tm.SetTile(lastAddedTile, tb);
+                    state = State.NORMAL;
+                    aButtonDown = 0;
+                }
+                    
 			}
 			else if (Input.GetKey("s") && 
 			Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y - 1),
-											 Vector2.down, 0.1f).collider == null)
-			{	
-				nextTiles.ClearAllTiles();
-				lastAddedTile += new Vector3Int(0,-1,0);
-				tm.SetTile(lastAddedTile ,tb);
-				
-				state = State.NORMAL;
+											 Vector2.down, 0.1f).collider == null && aButtonDown <= 0 && dButtonDown <= 0 && wButtonDown <= 0)
+			{
+                sButtonDown += 0.015f;
+                Debug.Log("sbuttondown: " + sButtonDown);
+                if (sButtonDown > 1)
+                {
+                    nextTiles.ClearAllTiles();
+                    lastAddedTile += new Vector3Int(0, -1, 0);
+                    tm.SetTile(lastAddedTile, tb);
+                    state = State.NORMAL;
+                    sButtonDown = 0;
+                }
+                    
 			}
 			else{
 				jumpForce = 0;
 			}
-		}
+
+            if (Input.GetKeyUp("w"))
+            {
+                wButtonDown = 0;
+            }
+            if (Input.GetKeyUp("d"))
+            {
+                dButtonDown = 0;
+            }
+            if (Input.GetKeyUp("s"))
+            {
+                sButtonDown = 0;
+            }
+            if (Input.GetKeyUp("a"))
+            {
+                aButtonDown = 0;
+            }
+
+        }
 		
 	}
 
