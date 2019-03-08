@@ -208,7 +208,7 @@ public class PlayerController : MonoBehaviour {
 			{
                 dButtonDown += 0.015f;
                 Debug.Log("dbuttondown: " + dButtonDown);
-                if (wButtonDown > 1)
+                if (dButtonDown > 1)
                 {
                     nextTiles.ClearAllTiles();
                     lastAddedTile += new Vector3Int(1, 0, 0);
@@ -253,6 +253,7 @@ public class PlayerController : MonoBehaviour {
 			else{
 				jumpForce = 0;
 			}
+
             if (Input.GetKeyUp("w"))
             {
                 wButtonDown = 0;
