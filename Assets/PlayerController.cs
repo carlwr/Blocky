@@ -111,12 +111,16 @@ public class PlayerController : MonoBehaviour {
         }
         else if ( canJump)
 		{
-			orientation += new Vector2(0, 1) * jumpForce;
+			orientation += new Vector2(0, 1) * maxJumpForce;
 			jumpForce = 0;
             state = State.NORMAL;
 			canJump = false;
 		}
 		
+	}
+
+	void interuptJump(){
+		rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
 	}
 	void normalUpdate(){
 
@@ -139,24 +143,25 @@ public class PlayerController : MonoBehaviour {
             orientation += new Vector2(1, 0);
         }
 
-        if (Input.GetKeyUp("w"))
+        if (Input.GetKeyDown("w"))
         {
             //This needs to be above the getkey(w) because it uses information set in the orientation above, which the block of code below nulls.
             jump();
         }
-        if (Input.GetKey("w"))
+		if (Input.GetKey("w"))
         {
-          jumpForce += 2f;
-		  if(jumpForce > maxJumpForce){
-			  jumpForce = maxJumpForce;
-		  }
-
-          if(state == State.WALL_SLIDE)
+			 if(state == State.WALL_SLIDE)
             {
                 //If we are sliding and holding in w, we do not want to stop sliding, this prevents that.
                 //TODO: make a less brittle implementation of this.
                 orientation.Set(0, 0);
             }
+        }
+		
+        if (Input.GetKeyUp("w"))
+        {
+          interuptJump();
+         
         }
 		
 	}
@@ -238,7 +243,7 @@ public class PlayerController : MonoBehaviour {
 	
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if(other.contacts[0].normal == new Vector2(1,0))
+		if(isGrounded(other.contacts))
 		{
             wallNormal = new Vector2(1,0);
             state = State.WALL_SLIDE;
@@ -250,18 +255,27 @@ public class PlayerController : MonoBehaviour {
         }
 	}
 
+	bool isGrounded(ContactPoint2D[] contacts){
+		foreach (ContactPoint2D contact in contacts)
+		{	
+			if(contact.normal == new Vector2(0,1)){
+				return true;
+			}
+			
+		}
+		return false;
+	}
 	void OnCollisionStay2D(Collision2D other)
 	{
-		if(other.contacts[0].normal == new Vector2(0,1)){
+		if(isGrounded(other.contacts)){
             if(state == State.WALL_SLIDE)
             {
                 state = State.NORMAL;
             }
 			canJump = true;
-		}
-		
-       
+		}	
 	}
+
 
     void OnTriggerEnter2D(Collider2D other)
     {
