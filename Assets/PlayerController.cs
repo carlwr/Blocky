@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public State state;
-	public float maxJumpForce = 30;
+	public float jumpForce = 30;
 	private Vector3Int lastAddedTile;
 	private bool chooseNextBox;
     private float aButtonDown = 0;
@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour {
     public float maxWallSlideSpeed = 2;
     public Vector2 wallNormal;
 
-    public float jumpForce = 0;
 	public Tilemap tm;
 
 	public TileBase tb;
@@ -51,7 +50,6 @@ public class PlayerController : MonoBehaviour {
         }
 
 
-        rb2d.AddForce (orientation * speed);
         switch (state)
         {
             case State.WALL_SLIDE:
@@ -62,6 +60,7 @@ public class PlayerController : MonoBehaviour {
                 addTileUpdate();
                 break;
         }
+        rb2d.AddForce (orientation * speed);
     }
 
 	void showTilesToChoose(){
@@ -102,22 +101,21 @@ public class PlayerController : MonoBehaviour {
         {
             //Jump type 1: Player is holding in button towards wall.
             if (orientation.x == -wallNormal.x)
-                orientation = new Vector2(0.3f * wallNormal.x, 1) * maxJumpForce;
+                orientation = new Vector2(0.3f * wallNormal.x, 1) * jumpForce;
             //Jump type 2: player is pressing button in direction opposite to wall.
             else if (orientation.x == wallNormal.x)
-                orientation = new Vector2(0.8f * wallNormal.x, 1) * maxJumpForce;
+                orientation = new Vector2(0.8f * wallNormal.x, 1) * jumpForce;
             //Jump type 3: Player is not moving in x direction.
             else
-                orientation += new Vector2(0, 1) * maxJumpForce;
-            jumpForce = 0;
+                orientation += new Vector2(0, 1) * jumpForce;
             state = State.NORMAL;
             canJump = false;
         }
         else if ( canJump)
 		{
-			orientation += new Vector2(0, 1) * maxJumpForce;
-			jumpForce = 0;
+			orientation += new Vector2(0, 1) * jumpForce;
             state = State.NORMAL;
+            print("Jump");
 			canJump = false;
 		}
 		
@@ -202,6 +200,7 @@ public class PlayerController : MonoBehaviour {
                     tm.SetTile(lastAddedTile, tb);
                     state = State.NORMAL;
                     wButtonDown = 0;
+                    
                 }
                 
 
@@ -255,9 +254,6 @@ public class PlayerController : MonoBehaviour {
                 }
                     
 			}
-			else{
-				jumpForce = 0;
-			}
 
             if (Input.GetKeyUp("w"))
             {
@@ -292,7 +288,16 @@ public class PlayerController : MonoBehaviour {
 	
 	void OnCollisionEnter2D(Collision2D other)
 	{
-		if(isGrounded(other.contacts))
+        if(isGrounded(other.contacts)){
+            if(state == State.WALL_SLIDE)
+            {
+                state = State.NORMAL;
+            }
+            print(other.collider.name);
+			canJump = true;
+		}
+
+		if(other.contacts[0].normal == new Vector2(1, 0))
 		{
             wallNormal = new Vector2(1,0);
             state = State.WALL_SLIDE;
@@ -304,25 +309,12 @@ public class PlayerController : MonoBehaviour {
         }
 	}
 
-	bool isGrounded(ContactPoint2D[] contacts){
-		foreach (ContactPoint2D contact in contacts)
-		{	
-			if(contact.normal == new Vector2(0,1)){
-				return true;
-			}
-			
-		}
-		return false;
-	}
+   
+	
 	void OnCollisionStay2D(Collision2D other)
 	{
-		if(isGrounded(other.contacts)){
-            if(state == State.WALL_SLIDE)
-            {
-                state = State.NORMAL;
-            }
-			canJump = true;
-		}	
+		
+			
 	}
 
 
@@ -335,5 +327,18 @@ public class PlayerController : MonoBehaviour {
             chooseNextBox = false;
         }
     }
+
+
+	bool isGrounded(ContactPoint2D[] contacts){
+		foreach (ContactPoint2D contact in contacts)
+		{	
+			if(contact.normal == new Vector2(0,1)){
+				return true;
+			}
+			
+		}
+		return false;
+	}
+
 }
 
