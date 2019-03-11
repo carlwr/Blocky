@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour {
 	public State state;
 	public float jumpForce = 30;
 	private Vector3Int lastAddedTile;
+    private List<Vector3Int> playerTiles;
 	private bool chooseNextBox;
     private float aButtonDown = 0;
     private float wButtonDown = 0;
@@ -38,13 +39,24 @@ public class PlayerController : MonoBehaviour {
 		tm = GetComponent<Tilemap>();
 		rb2d = GetComponent<Rigidbody2D> ();
 		state = State.NORMAL;
-		lastAddedTile = new Vector3Int(0,0,0);
+		playerTiles = new List<Vector3Int>();
+        lastAddedTile = new Vector3Int(0,0,0);
+        playerTiles.Add(lastAddedTile);
+        
 		//wallJump = false;
 	}
 	
 	void FixedUpdate()
 	{
-        if(Input.GetKeyDown(KeyCode.R))
+        rb2d.AddForce (orientation * speed);
+        if(rb2d.velocity.y > jumpForce){
+                rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
+        }
+    }
+
+    void Update()
+    {
+          if(Input.GetKeyDown(KeyCode.R))
         {
             Application.LoadLevel(Application.loadedLevel);
         }
@@ -60,7 +72,6 @@ public class PlayerController : MonoBehaviour {
                 addTileUpdate();
                 break;
         }
-        rb2d.AddForce (orientation * speed);
     }
 
 	void showTilesToChoose(){
@@ -109,14 +120,14 @@ public class PlayerController : MonoBehaviour {
             else
                 orientation += new Vector2(0, 1) * jumpForce;
             state = State.NORMAL;
-            canJump = false;
         }
         else if ( canJump)
 		{
+            
 			orientation += new Vector2(0, 1) * jumpForce;
+
+            
             state = State.NORMAL;
-            print("Jump");
-			canJump = false;
 		}
 		
 	}
@@ -125,7 +136,14 @@ public class PlayerController : MonoBehaviour {
 		rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
 	}
 	void normalUpdate(){
-
+        
+        print(isAnyTileGrounded());
+        if(isAnyTileGrounded()){
+            canJump = true;
+        }
+        else{
+            canJump = false;
+        }
         //Make it not slow motion as soon as the block has been selected and state is normal again.
         if(Time.timeScale != 1.0f)
         {
@@ -133,6 +151,7 @@ public class PlayerController : MonoBehaviour {
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
         }
 
+        
 		orientation = new Vector2(0,0);
 
 
@@ -198,12 +217,11 @@ public class PlayerController : MonoBehaviour {
                     nextTiles.ClearAllTiles();
                     lastAddedTile += new Vector3Int(0, 1, 0);
                     tm.SetTile(lastAddedTile, tb);
+                    playerTiles.Add(lastAddedTile);
                     state = State.NORMAL;
                     wButtonDown = 0;
                     
                 }
-                
-
                 
 			}
 			else if (Input.GetKey("d") && 
@@ -217,6 +235,7 @@ public class PlayerController : MonoBehaviour {
                     nextTiles.ClearAllTiles();
                     lastAddedTile += new Vector3Int(1, 0, 0);
                     tm.SetTile(lastAddedTile, tb);
+                    playerTiles.Add(lastAddedTile);
                     state = State.NORMAL;
                     dButtonDown = 0;
                 }
@@ -233,6 +252,7 @@ public class PlayerController : MonoBehaviour {
                     nextTiles.ClearAllTiles();
                     lastAddedTile += new Vector3Int(-1, 0, 0);
                     tm.SetTile(lastAddedTile, tb);
+                    playerTiles.Add(lastAddedTile);
                     state = State.NORMAL;
                     aButtonDown = 0;
                 }
@@ -249,6 +269,7 @@ public class PlayerController : MonoBehaviour {
                     nextTiles.ClearAllTiles();
                     lastAddedTile += new Vector3Int(0, -1, 0);
                     tm.SetTile(lastAddedTile, tb);
+                    playerTiles.Add(lastAddedTile);
                     state = State.NORMAL;
                     sButtonDown = 0;
                 }
@@ -293,8 +314,6 @@ public class PlayerController : MonoBehaviour {
             {
                 state = State.NORMAL;
             }
-            print(other.collider.name);
-			canJump = true;
 		}
 
 		if(other.contacts[0].normal == new Vector2(1, 0))
@@ -311,11 +330,6 @@ public class PlayerController : MonoBehaviour {
 
    
 	
-	void OnCollisionStay2D(Collision2D other)
-	{
-		
-			
-	}
 
 
     void OnTriggerEnter2D(Collider2D other)
@@ -339,6 +353,29 @@ public class PlayerController : MonoBehaviour {
 		}
 		return false;
 	}
+
+    bool isAnyTileGrounded(){
+        foreach (Vector3Int tile in playerTiles)
+        {
+            if(!isEmptyTilePlace(new Vector3Int(tile.x, tile.y -1 , 0))){
+                return true;
+            }
+        }
+        return false;
+    }
+    bool isEmptyTilePlace(Vector3Int tilePlace){
+        Vector3 tilemapWorld = tm.CellToWorld(tilePlace);
+        tilemapWorld.x += 0.5f;
+        tilemapWorld.y += 0.5f;
+
+        RaycastHit2D hit = Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y),
+											 Vector2.zero);
+        
+        if(hit.collider == null || hit.collider.tag == "Player"){
+            return true;
+        }
+        return false;
+    }
 
 }
 
