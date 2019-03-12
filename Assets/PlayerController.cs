@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PlayerController : MonoBehaviour {
+public class PlayerController : TilemapController {
 
 	public enum State{
 		NORMAL,
@@ -12,49 +12,49 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	public State state;
-	public float jumpForce = 30;
-	private Vector3Int lastAddedTile;
-    private List<Vector3Int> playerTiles;
-	private bool chooseNextBox;
-    private float aButtonDown = 0;
-    private float wButtonDown = 0;
-    private float dButtonDown = 0;
-    private float sButtonDown = 0;
-    //public bool wallJump;
-    public float maxWallSlideSpeed = 2;
-    public Vector2 wallNormal;
-
-	public Tilemap tm;
+	protected Vector3Int lastAddedTile;
+    protected List<Vector3Int> playerTiles;
+	protected bool chooseNextBox;
+    
+    protected Vector2 wallNormal;
+    protected float aButtonDown = 0;
+    protected float wButtonDown = 0;
+    protected float dButtonDown = 0;
+    protected float sButtonDown = 0;
 
 	public TileBase tb;
-	public Tilemap nextTiles;
-	public float speed;
-	public Vector2 orientation;
-	public Rigidbody2D rb2d;
-	public bool canJump;
+
+
+    public float getAButton(){
+        return aButtonDown;
+    }
+    public float getWButton(){
+        return wButtonDown;
+    }
+    public float getSButton(){
+        return sButtonDown;
+    }
+    public float getDButton(){
+        return dButtonDown;
+    }
+    public Vector3Int getLastAddedTile(){
+        return lastAddedTile;
+    }
 
 	
     // Use this for initialization
-    void Start () {
-		tm = GetComponent<Tilemap>();
-		rb2d = GetComponent<Rigidbody2D> ();
+    override protected void Start () {
+		base.Start();
 		state = State.NORMAL;
 		playerTiles = new List<Vector3Int>();
         lastAddedTile = new Vector3Int(0,0,0);
         playerTiles.Add(lastAddedTile);
         
-		//wallJump = false;
 	}
 	
-	void FixedUpdate()
-	{
-        rb2d.AddForce (orientation * speed);
-        if(rb2d.velocity.y > jumpForce){
-                rb2d.velocity = new Vector2(rb2d.velocity.x, jumpForce);
-        }
-    }
+	
 
-    void Update()
+    virtual protected void Update()
     {
           if(Input.GetKeyDown(KeyCode.R))
         {
@@ -65,6 +65,7 @@ public class PlayerController : MonoBehaviour {
         switch (state)
         {
             case State.WALL_SLIDE:
+                
             case State.NORMAL:
                 normalUpdate();
                 break;
@@ -74,308 +75,12 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
-	void showTilesToChoose(){
-		
-		nextTiles.ClearAllTiles();
+    virtual protected void normalUpdate(){
 
-		Vector3 tilemapWorld = tm.CellToWorld(lastAddedTile);
-		tilemapWorld.x += 0.5f;
-		tilemapWorld.y += 0.5f;
-
-		RaycastHit2D hit = Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y + 1),
-											 Vector2.zero);
-		if(hit.collider == null){
-			nextTiles.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1, 0), tb);
-		}
-
-		hit = Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y - 1),
-											 Vector2.down, 0.1f);
-		if(hit.collider == null){
-			nextTiles.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y - 1, 0), tb);
-		}
-
-		hit = Physics2D.Raycast(new Vector2(tilemapWorld.x+1, tilemapWorld.y),
-											 Vector2.right, 0.1f);
-		if(hit.collider == null){
-			nextTiles.SetTile(new Vector3Int(lastAddedTile.x + 1, lastAddedTile.y, 0), tb);
-		}
-
-		hit = Physics2D.Raycast(new Vector2(tilemapWorld.x-1, tilemapWorld.y),
-											 Vector2.left, 0.1f);
-		if(hit.collider== null){
-			nextTiles.SetTile(new Vector3Int(lastAddedTile.x - 1, lastAddedTile.y, 0), tb);
-		}
-	}
-
-	void jump(){
-        if (state == State.WALL_SLIDE)
-        {
-            //Jump type 1: Player is holding in button towards wall.
-            if (orientation.x == -wallNormal.x)
-                orientation = new Vector2(0.3f * wallNormal.x, 1) * jumpForce;
-            //Jump type 2: player is pressing button in direction opposite to wall.
-            else if (orientation.x == wallNormal.x)
-                orientation = new Vector2(0.8f * wallNormal.x, 1) * jumpForce;
-            //Jump type 3: Player is not moving in x direction.
-            else
-                orientation += new Vector2(0, 1) * jumpForce;
-            state = State.NORMAL;
-        }
-        else if ( canJump)
-		{
-            
-			orientation += new Vector2(0, 1) * jumpForce;
-
-            
-            state = State.NORMAL;
-		}
-		
-	}
-
-	void interuptJump(){
-		rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
-	}
-	void normalUpdate(){
-        
-        print(isAnyTileGrounded());
-        if(isAnyTileGrounded()){
-            canJump = true;
-        }
-        else{
-            canJump = false;
-        }
-        //Make it not slow motion as soon as the block has been selected and state is normal again.
-        if(Time.timeScale != 1.0f)
-        {
-            Time.timeScale = 1.0f;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        }
-
-        
-		orientation = new Vector2(0,0);
-
-
-        if (Input.GetKey("a"))
-        {
-            orientation += new Vector2(-1, 0);
-        }
-        if (Input.GetKey("d"))
-        {
-            orientation += new Vector2(1, 0);
-        }
-
-        if (Input.GetKeyDown("w"))
-        {
-            //This needs to be above the getkey(w) because it uses information set in the orientation above, which the block of code below nulls.
-            jump();
-        }
-		if (Input.GetKey("w"))
-        {
-			 if(state == State.WALL_SLIDE)
-            {
-                //If we are sliding and holding in w, we do not want to stop sliding, this prevents that.
-                //TODO: make a less brittle implementation of this.
-                orientation.Set(0, 0);
-            }
-        }
-		
-        if (Input.GetKeyUp("w"))
-        {
-          interuptJump();
-         
-        }
-		
-	}
-	void addTileUpdate(){
-
-        //When we are adding a tile, make everything slow-motion!
-        if(Time.timeScale == 1.0f)
-        {
-            Time.timeScale = 0.1f;
-            Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        }
-
-		showTilesToChoose();
-		if(!Input.anyKey){
-			chooseNextBox = true;
-		}
-		if(chooseNextBox){
-			
-			Vector3 tilemapWorld = tm.CellToWorld(lastAddedTile);
-			tilemapWorld.x += 0.5f;
-			tilemapWorld.y += 0.5f;
-
-			RaycastHit2D hit = Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y + 1),
-											 Vector2.zero);
-            if (Input.GetKey("w") &&
-            hit.collider == null && aButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
-			{
-                wButtonDown += 0.015f;
-                Debug.Log("wbuttondown: " + wButtonDown);
-                if (wButtonDown > 1)
-                {
-                    nextTiles.ClearAllTiles();
-                    lastAddedTile += new Vector3Int(0, 1, 0);
-                    tm.SetTile(lastAddedTile, tb);
-                    playerTiles.Add(lastAddedTile);
-                    state = State.NORMAL;
-                    wButtonDown = 0;
-                    
-                }
-                
-			}
-			else if (Input.GetKey("d") && 
-			Physics2D.Raycast(new Vector2(tilemapWorld.x+1, tilemapWorld.y),
-											 Vector2.right, 0.1f).collider	 == null && aButtonDown <= 0 && wButtonDown <= 0 && sButtonDown <= 0)
-			{
-                dButtonDown += 0.015f;
-                Debug.Log("dbuttondown: " + dButtonDown);
-                if (dButtonDown > 1)
-                {
-                    nextTiles.ClearAllTiles();
-                    lastAddedTile += new Vector3Int(1, 0, 0);
-                    tm.SetTile(lastAddedTile, tb);
-                    playerTiles.Add(lastAddedTile);
-                    state = State.NORMAL;
-                    dButtonDown = 0;
-                }
-                    
-			}
-			else if (Input.GetKey("a") && 
-			Physics2D.Raycast(new Vector2(tilemapWorld.x-1, tilemapWorld.y),
-											 Vector2.left, 0.1f).collider == null && wButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
-			{
-                aButtonDown += 0.015f;
-                Debug.Log("abuttondown: " + aButtonDown);
-                if (aButtonDown > 1)
-                {
-                    nextTiles.ClearAllTiles();
-                    lastAddedTile += new Vector3Int(-1, 0, 0);
-                    tm.SetTile(lastAddedTile, tb);
-                    playerTiles.Add(lastAddedTile);
-                    state = State.NORMAL;
-                    aButtonDown = 0;
-                }
-                    
-			}
-			else if (Input.GetKey("s") && 
-			Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y - 1),
-											 Vector2.down, 0.1f).collider == null && aButtonDown <= 0 && dButtonDown <= 0 && wButtonDown <= 0)
-			{
-                sButtonDown += 0.015f;
-                Debug.Log("sbuttondown: " + sButtonDown);
-                if (sButtonDown > 1)
-                {
-                    nextTiles.ClearAllTiles();
-                    lastAddedTile += new Vector3Int(0, -1, 0);
-                    tm.SetTile(lastAddedTile, tb);
-                    playerTiles.Add(lastAddedTile);
-                    state = State.NORMAL;
-                    sButtonDown = 0;
-                }
-                    
-			}
-
-            if (Input.GetKeyUp("w"))
-            {
-                wButtonDown = 0;
-            }
-            if (Input.GetKeyUp("d"))
-            {
-                dButtonDown = 0;
-            }
-            if (Input.GetKeyUp("s"))
-            {
-                sButtonDown = 0;
-            }
-            if (Input.GetKeyUp("a"))
-            {
-                aButtonDown = 0;
-            }
-
-        }
-		
-	}
-
-    void wallSlideUpdate()
-    {
-        if(rb2d.velocity.y < -maxWallSlideSpeed)
-        {
-            rb2d.velocity.Set(rb2d.velocity.x, -maxWallSlideSpeed);
-        }
-        //Check for when no longer touching wall
     }
 
-	
-	void OnCollisionEnter2D(Collision2D other)
-	{
-        if(isGrounded(other.contacts)){
-            if(state == State.WALL_SLIDE)
-            {
-                state = State.NORMAL;
-            }
-		}
+    virtual protected void addTileUpdate(){
 
-		if(other.contacts[0].normal == new Vector2(1, 0))
-		{
-            wallNormal = new Vector2(1,0);
-            state = State.WALL_SLIDE;
-		}
-        if(other.contacts[0].normal == new Vector2(-1, 0))
-        {
-            wallNormal = new Vector2(-1, 0);
-            state = State.WALL_SLIDE;
-        }
-	}
-
-   
-	
-
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if (other.tag == "Pickups")
-        {
-            orientation = new Vector3(0, 0, 0);
-            state = State.ADD_TILE;
-            chooseNextBox = false;
-        }
     }
-
-
-	bool isGrounded(ContactPoint2D[] contacts){
-		foreach (ContactPoint2D contact in contacts)
-		{	
-			if(contact.normal == new Vector2(0,1)){
-				return true;
-			}
-			
-		}
-		return false;
-	}
-
-    bool isAnyTileGrounded(){
-        foreach (Vector3Int tile in playerTiles)
-        {
-            if(!isEmptyTilePlace(new Vector3Int(tile.x, tile.y -1 , 0))){
-                return true;
-            }
-        }
-        return false;
-    }
-    bool isEmptyTilePlace(Vector3Int tilePlace){
-        Vector3 tilemapWorld = tm.CellToWorld(tilePlace);
-        tilemapWorld.x += 0.5f;
-        tilemapWorld.y += 0.5f;
-
-        RaycastHit2D hit = Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y),
-											 Vector2.zero);
-        
-        if(hit.collider == null || hit.collider.tag == "Player"){
-            return true;
-        }
-        return false;
-    }
-
 }
 
