@@ -9,11 +9,12 @@ public class PlayerMovement : TilemapController
 	[Range(10,150)]public float jumpForce;
     public TileBase tileBase;
     public float maxWallSlideSpeed = 2;
-    [Range(0,25)]public float jumpMultiplier = 10f;
+    [Range(0,50)]public float jumpMultiplier = 10f;
     [Range(0,150)]public float interruptedJumpMultiplier = 80f;
     [Range(0,1)]public float wallSlideMultiplier = 0.5f;
 
 
+    private float addTileAddOn = 0.05f;
     private bool chooseNextBox;
     private Vector2 wallNormal;
 	private Rigidbody2D rb2d;
@@ -77,6 +78,7 @@ public class PlayerMovement : TilemapController
 	}
 	 void normalUpdate(){
         
+        
 		orientation = new Vector2(0,0);
         //increase gravity for player on way down for feel
         if(rb2d.velocity.y < 0){
@@ -134,6 +136,10 @@ public class PlayerMovement : TilemapController
                 orientation.Set(0, 0);
             }
         }
+
+        if(Input.GetKeyUp("e")){
+            PlayerController.instance.state = PlayerController.State.ADD_TILE;
+        }
         
 	}
 	void addTileUpdate(){
@@ -154,79 +160,93 @@ public class PlayerMovement : TilemapController
             float wButtonDown = PlayerController.instance.getWButton();
             float dButtonDown = PlayerController.instance.getDButton();
             float sButtonDown = PlayerController.instance.getSButton();
-
-            if (Input.GetKey("w") 
-            && isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1,0), null) 
-            && aButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
-			{
-                PlayerController.instance.setWButton(wButtonDown + 0.015f);
-                if (PlayerController.instance.getWButton() > 1)
+            if(PlayerController.instance.boxesInInventory > 0){
+                if (Input.GetKey("w") 
+                && isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1,0), null) 
+                && aButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
                 {
-                    newTile(new Vector3Int(0, 1, 0));
-                    PlayerController.instance.state = PlayerController.State.NORMAL;
-                    PlayerController.instance.setWButton(0);
+                    PlayerController.instance.setWButton(wButtonDown + addTileAddOn);
+                    if (PlayerController.instance.getWButton() > 1)
+                    {
+                        newTile(new Vector3Int(0, 1, 0));
+                        PlayerController.instance.boxesInInventory --;
+                        UIController.instance.decreaseBoxesUnused();
+                        //PlayerController.instance.state = PlayerController.State.NORMAL;
+                        PlayerController.instance.setWButton(0);
+                        
+                    }
                     
                 }
-                
-			}
-			else if (Input.GetKey("d") 
-            && isEmptyTilePlace(new Vector3Int(lastAddedTile.x + 1, lastAddedTile.y,0), null)
-            && aButtonDown <= 0 && wButtonDown <= 0 && sButtonDown <= 0)
-			{
-                PlayerController.instance.setDButton(dButtonDown + 0.015f);
-                if (PlayerController.instance.getDButton() > 1)
+                else if (Input.GetKey("d") 
+                && isEmptyTilePlace(new Vector3Int(lastAddedTile.x + 1, lastAddedTile.y,0), null)
+                && aButtonDown <= 0 && wButtonDown <= 0 && sButtonDown <= 0)
                 {
-                    newTile(new Vector3Int(1, 0, 0));
-                    PlayerController.instance.state = PlayerController.State.NORMAL;
+                    PlayerController.instance.setDButton(dButtonDown + addTileAddOn);
+                    if (PlayerController.instance.getDButton() > 1)
+                    {
+                        newTile(new Vector3Int(1, 0, 0));
+                        PlayerController.instance.boxesInInventory --;
+                        UIController.instance.decreaseBoxesUnused();
+                        //PlayerController.instance.state = PlayerController.State.NORMAL;
+                        PlayerController.instance.setDButton(0);
+                    }
+                        
+                }
+                else if (Input.GetKey("a") 
+                && isEmptyTilePlace(new Vector3Int(lastAddedTile.x -1, lastAddedTile.y,0), null) 
+                && wButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
+                {
+                    PlayerController.instance.setAButton(aButtonDown + addTileAddOn);
+                    if (PlayerController.instance.getAButton() > 1)
+                    {
+                        newTile(new Vector3Int(-1, 0, 0));
+                        PlayerController.instance.boxesInInventory --;
+                        UIController.instance.decreaseBoxesUnused();
+                        //PlayerController.instance.state = PlayerController.State.NORMAL;
+                        PlayerController.instance.setAButton(0);
+                    }
+                        
+                }
+                else if (Input.GetKey("s") 
+                && isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y - 1,0), null) 
+                && aButtonDown <= 0 && dButtonDown <= 0 && wButtonDown <= 0)
+                {
+                    PlayerController.instance.setSButton(sButtonDown + addTileAddOn);
+                    if (PlayerController.instance.getSButton() > 1)
+                    {
+                        newTile(new Vector3Int(0, -1, 0));
+                        PlayerController.instance.boxesInInventory --;
+                        UIController.instance.decreaseBoxesUnused();
+                        //PlayerController.instance.state = PlayerController.State.NORMAL;
+                        PlayerController.instance.setSButton(0);
+                    }
+                        
+                }
+
+                if (Input.GetKeyUp("w"))
+                {
+                    PlayerController.instance.setWButton(0);
+                }
+                if (Input.GetKeyUp("d"))
+                {
                     PlayerController.instance.setDButton(0);
                 }
-                    
-			}
-			else if (Input.GetKey("a") 
-            && isEmptyTilePlace(new Vector3Int(lastAddedTile.x -1, lastAddedTile.y,0), null) 
-            && wButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
-			{
-                PlayerController.instance.setAButton(aButtonDown + 0.015f);
-                if (PlayerController.instance.getAButton() > 1)
+                if (Input.GetKeyUp("s"))
                 {
-                    newTile(new Vector3Int(-1, 0, 0));
-                    PlayerController.instance.state = PlayerController.State.NORMAL;
-                    PlayerController.instance.setAButton(0);
-                }
-                    
-			}
-			else if (Input.GetKey("s") 
-            && isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y - 1,0), null) 
-            && aButtonDown <= 0 && dButtonDown <= 0 && wButtonDown <= 0)
-			{
-                PlayerController.instance.setSButton(sButtonDown + 0.015f);
-                if (PlayerController.instance.getSButton() > 1)
-                {
-                    newTile(new Vector3Int(0, -1, 0));
-                    PlayerController.instance.state = PlayerController.State.NORMAL;
                     PlayerController.instance.setSButton(0);
                 }
-                    
-			}
+                if (Input.GetKeyUp("a"))
+                {
+                    PlayerController.instance.setAButton(0);
+                }
 
-            if (Input.GetKeyUp("w"))
-            {
-                PlayerController.instance.setWButton(0);
             }
-            if (Input.GetKeyUp("d"))
-            {
-                PlayerController.instance.setDButton(0);
-            }
-            if (Input.GetKeyUp("s"))
-            {
-                PlayerController.instance.setSButton(0);
-            }
-            if (Input.GetKeyUp("a"))
-            {
-                PlayerController.instance.setAButton(0);
+            if(Input.GetKeyUp("e")){
+                PlayerController.instance.state = PlayerController.State.NORMAL;
             }
 
         }
+
 		
 	}
 
@@ -276,8 +296,10 @@ public class PlayerMovement : TilemapController
     {
         if (other.tag == "Pickups")
         {
+            PlayerController.instance.boxesInInventory ++;
+            UIController.instance.increaseBoxesUnused();
             orientation = new Vector3(0, 0, 0);
-            PlayerController.instance.state = PlayerController.State.ADD_TILE;
+            //PlayerController.instance.state = PlayerController.State.ADD_TILE;
             chooseNextBox = false;
         }
     }

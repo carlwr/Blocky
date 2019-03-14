@@ -22,8 +22,10 @@ public class PlayerController : MonoBehaviour {
     private float wButtonDown = 0;
     private float dButtonDown = 0;
     private float sButtonDown = 0;
+    public int boxesInInventory;
 
 	public TileBase tb;
+
 
     public Vector3Int getLastAddedTile(){
         return lastAddedTile;
