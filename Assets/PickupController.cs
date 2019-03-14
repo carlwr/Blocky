@@ -24,7 +24,7 @@ public class PickupController : TilemapController
     
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (tilemap != null && collider.gameObject.GetComponent<PlayerController>() != null)
+        if (tilemap != null && collider.gameObject.tag == "Player")
         {
             Vector2 hitPosition = GetComponent<Collider2D>().ClosestPoint(collider.transform.position);
             print(tilemap.GetTile(tilemap.WorldToCell(hitPosition)));

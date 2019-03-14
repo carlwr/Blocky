@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class PlayerController : TilemapController {
+public class PlayerController : MonoBehaviour {
 
 	public enum State{
 		NORMAL,
@@ -11,21 +11,53 @@ public class PlayerController : TilemapController {
         WALL_SLIDE
 	}
 
+    public static PlayerController instance;
+
 	public State state;
-	protected Vector3Int lastAddedTile;
-    protected List<Vector3Int> playerTiles;
-	protected bool chooseNextBox;
+	private Vector3Int lastAddedTile;
+    private List<Vector3Int> playerTiles;
+	
     
-    protected Vector2 wallNormal;
-    protected float aButtonDown = 0;
-    protected float wButtonDown = 0;
-    protected float dButtonDown = 0;
-    protected float sButtonDown = 0;
+    private float aButtonDown = 0;
+    private float wButtonDown = 0;
+    private float dButtonDown = 0;
+    private float sButtonDown = 0;
 
 	public TileBase tb;
 
+    public Vector3Int getLastAddedTile(){
+        return lastAddedTile;
+    }
+    public void setLastAddedTile(Vector3Int newTilePos){
+        lastAddedTile = newTilePos;
+    }
 
-    public float getAButton(){
+    public List<Vector3Int> getPlayerTiles(){
+        return playerTiles;
+    }
+    public void AddToPlayerTiles(Vector3Int newTile){
+        playerTiles.Add(newTile);
+    }
+
+
+    public void setAButton(float newAButtonDown){
+        aButtonDown = newAButtonDown;
+    }
+    public void setSButton(float newSButtonDown){
+        sButtonDown = newSButtonDown;
+    }
+    
+    public void setDButton(float newDButtonDown){
+        dButtonDown = newDButtonDown;
+    }
+    
+    public void setWButton(float newWButtonDown){
+        wButtonDown = newWButtonDown;
+    }
+    
+    
+    
+     public float getAButton(){
         return aButtonDown;
     }
     public float getWButton(){
@@ -37,14 +69,14 @@ public class PlayerController : TilemapController {
     public float getDButton(){
         return dButtonDown;
     }
-    public Vector3Int getLastAddedTile(){
-        return lastAddedTile;
+
+    void Awake()
+    {
+      instance = this;   
     }
 
-	
     // Use this for initialization
-    override protected void Start () {
-		base.Start();
+     void Start () {
 		state = State.NORMAL;
 		playerTiles = new List<Vector3Int>();
         lastAddedTile = new Vector3Int(0,0,0);
@@ -54,33 +86,14 @@ public class PlayerController : TilemapController {
 	
 	
 
-    virtual protected void Update()
+    void Update()
     {
           if(Input.GetKeyDown(KeyCode.R))
         {
             Application.LoadLevel(Application.loadedLevel);
         }
 
-
-        switch (state)
-        {
-            case State.WALL_SLIDE:
-                
-            case State.NORMAL:
-                normalUpdate();
-                break;
-            case State.ADD_TILE:
-                addTileUpdate();
-                break;
-        }
     }
 
-    virtual protected void normalUpdate(){
-
-    }
-
-    virtual protected void addTileUpdate(){
-
-    }
+    
 }
-

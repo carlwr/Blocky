@@ -1,59 +1,62 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
-public class PlayerHelpTilesController : PlayerController
+public class PlayerHelpTilesController : TilemapController
 {
     // Start is called before the first frame update
-   PlayerController playerController;
+
+   public TileBase tileBase;
 
    override protected void Start(){
        
        base.Start();
-        playerController = GameObject.Find("Player").GetComponent<PlayerController>();
         
    }
 
-   override protected void Update(){
-       state = playerController.state;
-       wButtonDown = playerController.getWButton();
-       sButtonDown = playerController.getSButton();
-       aButtonDown = playerController.getAButton();
-       dButtonDown = playerController.getDButton();
-       base.Update();
+    void Update(){
+       if(PlayerController.instance.state == PlayerController.State.ADD_TILE){
+           showTilesToChoose();
+            updateSelectedTileColor();
+       }
+       else{
+           tilemap.ClearAllTiles();
+       }
    }
 
-    override protected void normalUpdate(){
-        tilemap.ClearAllTiles();
-    }
-    
-    override protected void addTileUpdate(){
-        showTilesToChoose();
-        updateSelectedTileColor();
-    }
+   
 
     void showTilesToChoose(){
-        lastAddedTile = playerController.getLastAddedTile();
 		tilemap.ClearAllTiles();
+        
+        Vector3Int lastAddedTile = PlayerController.instance.getLastAddedTile();
              
 		if(isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1,0), null)){
-			tilemap.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1, 0), tb);
+			tilemap.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1, 0), tileBase);
 		}
 
 		if(isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y - 1,0), null)){
-			tilemap.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y - 1, 0), tb);
+			tilemap.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y - 1, 0), tileBase);
 		}
 
 		if(isEmptyTilePlace(new Vector3Int(lastAddedTile.x + 1, lastAddedTile.y,0), null)){
-			tilemap.SetTile(new Vector3Int(lastAddedTile.x + 1, lastAddedTile.y, 0), tb);
+			tilemap.SetTile(new Vector3Int(lastAddedTile.x + 1, lastAddedTile.y, 0), tileBase);
 		}
 
 		if(isEmptyTilePlace(new Vector3Int(lastAddedTile.x-1, lastAddedTile.y,0), null)){
-			tilemap.SetTile(new Vector3Int(lastAddedTile.x - 1, lastAddedTile.y, 0), tb);
+			tilemap.SetTile(new Vector3Int(lastAddedTile.x - 1, lastAddedTile.y, 0), tileBase);
 		}
 	}
 
     void updateSelectedTileColor(){
+        
+       float wButtonDown = PlayerController.instance.getWButton();
+       float sButtonDown = PlayerController.instance.getSButton();
+       float aButtonDown = PlayerController.instance.getAButton();
+       float dButtonDown = PlayerController.instance.getDButton();
+       
+        Vector3Int lastAddedTile = PlayerController.instance.getLastAddedTile();
         
         tilemap.SetColor(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1, 0), new Color(wButtonDown,1-wButtonDown, 1-wButtonDown));
 		
@@ -64,4 +67,5 @@ public class PlayerHelpTilesController : PlayerController
         tilemap.SetColor(new Vector3Int(lastAddedTile.x - 1, lastAddedTile.y, 0), new Color(aButtonDown,1-aButtonDown, 1-aButtonDown));
     
     }
+
 }
