@@ -76,7 +76,7 @@ public class PlayerMovement : TilemapController
 	void interuptJump(){
 		rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
 	}
-	 void normalUpdate(){
+	void normalUpdate(){
         
         
 		orientation = new Vector2(0,0);
@@ -249,6 +249,14 @@ public class PlayerMovement : TilemapController
 
 		
 	}
+
+    bool canDeleteTile(Vector3Int tilePos){
+        Vector3Int secondToLastPlayerPos = PlayerController.instance.getPlayerTiles()[PlayerController.instance.getPlayerTiles().Count-2];
+        if(tilePos == secondToLastPlayerPos){
+            return true;
+        }
+        return false;
+    }
 
     void wallSlideUpdate()
     {
