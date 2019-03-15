@@ -157,7 +157,7 @@ public class PlayerMovement : TilemapController
         }
 
 
-		if(!Input.anyKey){
+		if(!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")){
 			chooseNextBox = true;
 		}
 		if(chooseNextBox){
