@@ -162,7 +162,7 @@ public class PlayerMovement : TilemapController
             float dButtonDown = PlayerController.instance.getDButton();
             float sButtonDown = PlayerController.instance.getSButton();
             if(PlayerController.instance.boxesInInventory > 0){
-                if (Input.GetKey("w") 
+                if (Input.GetKey("w")
                 && isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1,0), null) 
                 && aButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
                 {
@@ -252,9 +252,11 @@ public class PlayerMovement : TilemapController
 	}
 
     bool canDeleteTile(Vector3Int tilePos){
-        Vector3Int secondToLastPlayerPos = PlayerController.instance.getPlayerTiles()[PlayerController.instance.getPlayerTiles().Count-2];
-        if(tilePos == secondToLastPlayerPos){
-            return true;
+        if( PlayerController.instance.getPlayerTiles().Count > 1){
+            Vector3Int secondToLastPlayerPos = PlayerController.instance.getPlayerTiles()[PlayerController.instance.getPlayerTiles().Count-2];
+            if(tilePos == secondToLastPlayerPos){
+                return true;
+            }
         }
         return false;
     }
