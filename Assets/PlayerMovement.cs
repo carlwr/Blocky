@@ -161,7 +161,15 @@ public class PlayerMovement : TilemapController
             float wButtonDown = PlayerController.instance.getWButton();
             float dButtonDown = PlayerController.instance.getDButton();
             float sButtonDown = PlayerController.instance.getSButton();
-            if(PlayerController.instance.boxesInInventory > 0){
+            if(Input.GetKeyUp("q") && PlayerController.instance.getPlayerTiles().Count > 1)
+            {
+                //If q is pressed, delete the block that was placed last.
+                tilemap.SetTile(PlayerController.instance.getLastAddedTile(), null);
+                PlayerController.instance.deleteLastAddedTile();
+                PlayerController.instance.boxesInInventory++;
+                UIController.instance.increaseBoxesUnused();
+            }
+            else if(PlayerController.instance.boxesInInventory > 0){
                 if (Input.GetKey("w")
                 && isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1,0), null) 
                 && aButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
@@ -263,7 +271,6 @@ public class PlayerMovement : TilemapController
 
     void wallSlideUpdate()
     {
-        
 
         if(rb2d.velocity.y < -maxWallSlideSpeed)
         {

@@ -30,6 +30,14 @@ public class PlayerController : MonoBehaviour {
     public Vector3Int getLastAddedTile(){
         return lastAddedTile;
     }
+
+    public void deleteLastAddedTile()
+    {
+        int tileCount = playerTiles.Count;
+        playerTiles.Remove(lastAddedTile);
+        lastAddedTile = playerTiles[tileCount - 2];
+    }
+
     public void setLastAddedTile(Vector3Int newTilePos){
         lastAddedTile = newTilePos;
     }
