@@ -138,7 +138,7 @@ public class PlayerMovement : TilemapController
             }
         }
 
-        if(Input.GetKeyUp("e")){
+        if(Input.GetKeyDown("left shift")){
             PlayerController.instance.state = PlayerController.State.ADD_TILE;
         }
         
@@ -151,6 +151,11 @@ public class PlayerMovement : TilemapController
             Time.timeScale = 0.1f;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
         }
+
+        if(Input.GetKeyUp("left shift")){
+                PlayerController.instance.state = PlayerController.State.NORMAL;
+        }
+
 
 		if(!Input.anyKey){
 			chooseNextBox = true;
@@ -250,10 +255,7 @@ public class PlayerMovement : TilemapController
                 }
 
             }
-            if(Input.GetKeyUp("e")){
-                PlayerController.instance.state = PlayerController.State.NORMAL;
-            }
-
+            
         }
 
 		
