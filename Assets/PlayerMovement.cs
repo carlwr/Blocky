@@ -53,20 +53,21 @@ public class PlayerMovement : TilemapController
     void jump(){
         if (PlayerController.instance.state == PlayerController.State.WALL_SLIDE)
         {
+            
+            //Jump type 3: Player is not moving in x direction.
+            if (orientation.x == 0)
+                rb2d.velocity += new Vector2(0, 1) * jumpForce;
             //Jump type 1: Player is holding in button towards wall.
-            if (orientation.x == -wallNormal.x)
+            else if (Mathf.Sign(orientation.x) == Mathf.Sign(-wallNormal.x))
                 rb2d.velocity = new Vector2(0.3f * wallNormal.x, 1) * jumpForce;
             //Jump type 2: player is pressing button in direction opposite to wall.
-            else if (orientation.x == wallNormal.x)
+            else if (Mathf.Sign(orientation.x) == Mathf.Sign(wallNormal.x))
                 rb2d.velocity = new Vector2(0.8f * wallNormal.x, 1) * jumpForce;
-            //Jump type 3: Player is not moving in x direction.
-            else
-                rb2d.velocity += new Vector2(0, 1) * jumpForce;
+            
             PlayerController.instance.state = PlayerController.State.NORMAL;
         }
         else if ( canJump)
 		{
-             
 			rb2d.velocity += new Vector2(0, 1) * jumpForce;
             PlayerController.instance.state = PlayerController.State.NORMAL;
 		}
