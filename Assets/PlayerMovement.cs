@@ -59,7 +59,7 @@ public class PlayerMovement : TilemapController
                 rb2d.velocity += new Vector2(0, 1) * jumpForce;
             //Jump type 1: Player is holding in button towards wall.
             else if (Mathf.Sign(orientation.x) == Mathf.Sign(-wallNormal.x))
-                rb2d.velocity = new Vector2(0.3f * wallNormal.x, 1) * jumpForce;
+                rb2d.velocity = new Vector2(0.9f * wallNormal.x, 1) * jumpForce;
             //Jump type 2: player is pressing button in direction opposite to wall.
             else if (Mathf.Sign(orientation.x) == Mathf.Sign(wallNormal.x))
                 rb2d.velocity = new Vector2(0.8f * wallNormal.x, 1) * jumpForce;
@@ -114,6 +114,7 @@ public class PlayerMovement : TilemapController
             if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE  && wallNormal == new Vector2(1,0)){
                 rb2d.velocity *= new Vector2(0,wallSlideMultiplier);
             }
+
             orientation += new Vector2(-1, 0) * speed;
         }
         if (Input.GetKey("d"))
