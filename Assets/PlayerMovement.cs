@@ -12,6 +12,7 @@ public class PlayerMovement : TilemapController
     [Range(0,50)]public float jumpMultiplier = 10f;
     [Range(0,150)]public float interruptedJumpMultiplier = 80f;
     [Range(0,1)]public float wallSlideMultiplier = 0.5f;
+    public bool usingSecondaryJump = false;
 
 
     private float addTileAddOn = 0.05f;
@@ -50,6 +51,30 @@ public class PlayerMovement : TilemapController
 		orientation = new Vector2(0,0);
     }
 
+    //A secondary kind of jump to test different feels
+    //(Instead of ordinary)
+    void jump_secondary(){
+          if (PlayerController.instance.state == PlayerController.State.WALL_SLIDE)
+        {
+            
+            //Jump type 1: Player is holding in button towards wall.
+            if (orientation.x == -wallNormal.x)
+                rb2d.velocity = new Vector2(0.3f * wallNormal.x, 1) * jumpForce;
+            //Jump type 2: player is pressing button in direction opposite to wall.
+            else if (orientation.x == wallNormal.x)
+                rb2d.velocity = new Vector2(0.8f * wallNormal.x, 1) * jumpForce;
+            //Jump type 3: Player is not moving in x direction.
+            else
+                rb2d.velocity += new Vector2(0, 1) * jumpForce;
+            PlayerController.instance.state = PlayerController.State.NORMAL;
+        }
+        else if ( canJump)
+		{
+			rb2d.velocity += new Vector2(0, 1) * jumpForce;
+            PlayerController.instance.state = PlayerController.State.NORMAL;
+		}
+    }
+
     void jump(){
         if (PlayerController.instance.state == PlayerController.State.WALL_SLIDE)
         {
@@ -74,9 +99,6 @@ public class PlayerMovement : TilemapController
 		
 	}
 
-	void interuptJump(){
-		rb2d.velocity = new Vector2(rb2d.velocity.x, 0);
-	}
 	void normalUpdate(){
         
         
@@ -127,7 +149,12 @@ public class PlayerMovement : TilemapController
 
         if (Input.GetKeyDown("w"))
         {
-            jump();
+            if(usingSecondaryJump){
+                jump_secondary();
+            }
+            else{
+                jump();
+            }
         }
 		if (Input.GetKey("w"))
         {
