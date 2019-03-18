@@ -9,6 +9,7 @@ public class UIController : MonoBehaviour
 
     public TextMeshProUGUI boxesUnused;
 
+    public TextMeshProUGUI conversation;
     void Awake()
     {
         instance = this;

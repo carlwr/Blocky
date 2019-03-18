@@ -27,7 +27,6 @@ public class PickupController : TilemapController
         if (tilemap != null && collider.gameObject.tag == "Player")
         {
             Vector2 hitPosition = GetComponent<Collider2D>().ClosestPoint(collider.transform.position);
-            print(tilemap.GetTile(tilemap.WorldToCell(hitPosition)));
             tilemap.SetTile(tilemap.WorldToCell(hitPosition), null);
         }
     }
