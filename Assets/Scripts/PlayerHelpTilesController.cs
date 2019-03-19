@@ -31,7 +31,7 @@ public class PlayerHelpTilesController : TilemapController
     void showTilesToChoose(){
 		tilemap.ClearAllTiles();
         
-        Vector3Int lastAddedTile = PlayerController.instance.getLastAddedTile();
+        Vector3Int lastAddedTile = PlayerController.instance.getLastAddedTile().position;
              
 		if(isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1,0), null)){
 			tilemap.SetTile(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1, 0), tileBase);
@@ -52,7 +52,7 @@ public class PlayerHelpTilesController : TilemapController
 
     void updateSelectedTileColor(){
         
-        Vector3Int lastAddedTile = PlayerController.instance.getLastAddedTile();
+        Vector3Int lastAddedTile = PlayerController.instance.getLastAddedTile().position;
         if(PlayerController.instance.boxesInInventory < 1){
             
             tilemap.SetColor(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1, 0), new Color(0.5f,0.5f, 0.5f, 0.3f));
