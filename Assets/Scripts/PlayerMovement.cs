@@ -106,7 +106,7 @@ public class PlayerMovement : TilemapController
         //increase gravity for player on way down for feel
         if(rb2d.velocity.y < 0){
             rb2d.velocity += Vector2.up * Physics2D.gravity.y * (jumpMultiplier - 1) * Time.fixedDeltaTime;
-        }else if(rb2d.velocity.y > 0 && !Input.GetKey("w")){
+        }else if(rb2d.velocity.y > 0 && !Input.GetButton("Jump")){
              rb2d.velocity += Vector2.up * Physics2D.gravity.y * (interruptedJumpMultiplier - 1) * Time.fixedDeltaTime;
         }
 
@@ -131,7 +131,7 @@ public class PlayerMovement : TilemapController
         
 
         
-        if (Input.GetKey("a"))
+        if (Input.GetButton("Left"))
         {
             if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE  && wallNormal == new Vector2(1,0)){
                 rb2d.velocity *= new Vector2(0,wallSlideMultiplier);
@@ -139,7 +139,7 @@ public class PlayerMovement : TilemapController
 
             orientation += new Vector2(-1, 0) * speed;
         }
-        if (Input.GetKey("d"))
+        if (Input.GetButton("Right"))
         {
             if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE && wallNormal == new Vector2(-1,0)){
                 rb2d.velocity *= new Vector2(0,wallSlideMultiplier);
@@ -147,7 +147,7 @@ public class PlayerMovement : TilemapController
             orientation += new Vector2(1, 0) * speed;
         }
 
-        if (Input.GetKeyDown("w"))
+        if (Input.GetButtonDown("Jump"))
         {
             if(usingSecondaryJump){
                 jump_secondary();
@@ -157,7 +157,7 @@ public class PlayerMovement : TilemapController
             }
         }
         
-        if (Input.GetKey("w"))
+        if (Input.GetButton("Jump"))
         {
 			 if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE)
             {
@@ -167,7 +167,7 @@ public class PlayerMovement : TilemapController
             }
         }
 
-        if(Input.GetKeyDown("left shift")){
+        if(Input.GetButtonDown("BuildingButton")){
             PlayerController.instance.state = PlayerController.State.ADD_TILE;
         }
         
@@ -181,12 +181,12 @@ public class PlayerMovement : TilemapController
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
         }
 
-        if(Input.GetKeyUp("left shift")){
+        if(Input.GetButtonUp("BuildingButton")){
                 PlayerController.instance.state = PlayerController.State.NORMAL;
         }
 
 
-		if(!Input.GetKey("w") && !Input.GetKey("a") && !Input.GetKey("s") && !Input.GetKey("d")){
+		if(!Input.GetButton("Up") && !Input.GetButton("Left") && !Input.GetButton("Down") && !Input.GetButton("Right")){
 			chooseNextBox = true;
 		}
 		if(chooseNextBox){
@@ -195,7 +195,7 @@ public class PlayerMovement : TilemapController
             float wButtonDown = PlayerController.instance.getWButton();
             float dButtonDown = PlayerController.instance.getDButton();
             float sButtonDown = PlayerController.instance.getSButton();
-            if(Input.GetKeyUp("q") && PlayerController.instance.getPlayerTiles().Count > 1)
+            if(Input.GetButtonUp("DeleteBlockButton") && PlayerController.instance.getPlayerTiles().Count > 1)
             {
                 //If q is pressed, delete the block that was placed last.
                 tilemap.SetTile(PlayerController.instance.getLastAddedTile().position, null);
@@ -204,7 +204,7 @@ public class PlayerMovement : TilemapController
                 UIController.instance.increaseBoxesUnused();
             }
             else if(PlayerController.instance.boxesInInventory > 0){
-                if (Input.GetKey("w")
+                if (Input.GetButton("Up")
                 && isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y + 1,0), null) 
                 && aButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
                 {
@@ -220,7 +220,7 @@ public class PlayerMovement : TilemapController
                     }
                     
                 }
-                else if (Input.GetKey("d") 
+                else if (Input.GetButton("Right") 
                 && isEmptyTilePlace(new Vector3Int(lastAddedTile.x + 1, lastAddedTile.y,0), null)
                 && aButtonDown <= 0 && wButtonDown <= 0 && sButtonDown <= 0)
                 {
@@ -235,7 +235,7 @@ public class PlayerMovement : TilemapController
                     }
                         
                 }
-                else if (Input.GetKey("a") 
+                else if (Input.GetButton("Left") 
                 && isEmptyTilePlace(new Vector3Int(lastAddedTile.x -1, lastAddedTile.y,0), null) 
                 && wButtonDown <= 0 && dButtonDown <= 0 && sButtonDown <= 0)
                 {
@@ -250,7 +250,7 @@ public class PlayerMovement : TilemapController
                     }
                         
                 }
-                else if (Input.GetKey("s") 
+                else if (Input.GetButton("Down") 
                 && isEmptyTilePlace(new Vector3Int(lastAddedTile.x, lastAddedTile.y - 1,0), null) 
                 && aButtonDown <= 0 && dButtonDown <= 0 && wButtonDown <= 0)
                 {
@@ -266,19 +266,19 @@ public class PlayerMovement : TilemapController
                         
                 }
 
-                if (Input.GetKeyUp("w"))
+                if (Input.GetButtonUp("Up"))
                 {
                     PlayerController.instance.setWButton(0);
                 }
-                if (Input.GetKeyUp("d"))
+                if (Input.GetButtonUp("Right"))
                 {
                     PlayerController.instance.setDButton(0);
                 }
-                if (Input.GetKeyUp("s"))
+                if (Input.GetButtonUp("Down"))
                 {
                     PlayerController.instance.setSButton(0);
                 }
-                if (Input.GetKeyUp("a"))
+                if (Input.GetButtonUp("Left"))
                 {
                     PlayerController.instance.setAButton(0);
                 }
