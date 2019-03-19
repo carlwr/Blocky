@@ -97,6 +97,11 @@ public class PlayerController : MonoBehaviour {
         return dButtonDown;
     }
 
+    public void resetLevel()
+    {
+        Application.LoadLevel(Application.loadedLevel);
+    }
+
     void Awake()
     {
       instance = this;   
@@ -115,11 +120,10 @@ public class PlayerController : MonoBehaviour {
 
     void Update()
     {
-          if(Input.GetKeyDown(KeyCode.R))
+         if(Input.GetKeyDown(KeyCode.R))
         {
-            Application.LoadLevel(Application.loadedLevel);
+            resetLevel();
         }
-
     }
 
     

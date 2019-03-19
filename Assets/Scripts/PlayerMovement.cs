@@ -156,7 +156,8 @@ public class PlayerMovement : TilemapController
                 jump();
             }
         }
-		if (Input.GetKey("w"))
+        
+        if (Input.GetKey("w"))
         {
 			 if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE)
             {
@@ -344,11 +345,18 @@ public class PlayerMovement : TilemapController
     {
         if (other.tag == "Pickups")
         {
+            Debug.Log("Pickup Gained!");
             PlayerController.instance.boxesInInventory ++;
             UIController.instance.increaseBoxesUnused();
             orientation = new Vector3(0, 0, 0);
             //PlayerController.instance.state = PlayerController.State.ADD_TILE;
             chooseNextBox = false;
+        }
+
+        if (other.tag == "Obstacle")
+        {
+            Debug.Log("Obstacle Touched");
+            PlayerController.instance.resetLevel();
         }
     }
 
