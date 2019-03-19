@@ -35,6 +35,7 @@ public class ConversationalController : MonoBehaviour
                     if(tilemap.GetTile(pPos) != null){
                         string text = ((ConversationalAgentTile)tilemap.GetTile(new Vector3Int(i,j,0))).text;
                         UIController.instance.conversation.text = text;
+                        UIController.instance.setConversationPosition(new Vector3(i, j + 4, 0));
                     }
                 }   
             }
