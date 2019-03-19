@@ -189,7 +189,7 @@ public class PlayerMovement : TilemapController
 			chooseNextBox = true;
 		}
 		if(chooseNextBox){
-			Vector3Int lastAddedTile = PlayerController.instance.getLastAddedTile();
+			Vector3Int lastAddedTile = PlayerController.instance.getLastAddedTile().position;
             float aButtonDown = PlayerController.instance.getAButton();
             float wButtonDown = PlayerController.instance.getWButton();
             float dButtonDown = PlayerController.instance.getDButton();
@@ -197,7 +197,7 @@ public class PlayerMovement : TilemapController
             if(Input.GetKeyUp("q") && PlayerController.instance.getPlayerTiles().Count > 1)
             {
                 //If q is pressed, delete the block that was placed last.
-                tilemap.SetTile(PlayerController.instance.getLastAddedTile(), null);
+                tilemap.SetTile(PlayerController.instance.getLastAddedTile().position, null);
                 PlayerController.instance.deleteLastAddedTile();
                 PlayerController.instance.boxesInInventory++;
                 UIController.instance.increaseBoxesUnused();
@@ -291,7 +291,7 @@ public class PlayerMovement : TilemapController
 
     bool canDeleteTile(Vector3Int tilePos){
         if( PlayerController.instance.getPlayerTiles().Count > 1){
-            Vector3Int secondToLastPlayerPos = PlayerController.instance.getPlayerTiles()[PlayerController.instance.getPlayerTiles().Count-2];
+            Vector3Int secondToLastPlayerPos = PlayerController.instance.getPlayerTiles()[PlayerController.instance.getPlayerTiles().Count-2].position;
             if(tilePos == secondToLastPlayerPos){
                 return true;
             }
@@ -356,9 +356,9 @@ public class PlayerMovement : TilemapController
 	
 
     bool isAnyTileGrounded(){
-        foreach (Vector3Int tile in PlayerController.instance.getPlayerTiles())
+        foreach (Cube tile in PlayerController.instance.getPlayerTiles())
         {
-            if(!isEmptyTilePlace(new Vector3Int(tile.x, tile.y -1 , 0), gameObject.tag)){
+            if(!isEmptyTilePlace(new Vector3Int(tile.position.x, tile.position.y -1 , 0), gameObject.tag)){
                 return true;
             }
         }
@@ -366,23 +366,24 @@ public class PlayerMovement : TilemapController
     }
 
     bool isAnyTileOnWall(){
-        foreach (Vector3Int tile in PlayerController.instance.getPlayerTiles())
+        foreach (Cube tile in PlayerController.instance.getPlayerTiles())
         {
-            if(!isEmptyTilePlace(new Vector3Int(tile.x-1, tile.y , 0), gameObject.tag)){
+            if(!isEmptyTilePlace(new Vector3Int(tile.position.x-1, tile.position.y , 0), gameObject.tag)){
                 return true;
             }
             
-            else if(!isEmptyTilePlace(new Vector3Int(tile.x+1, tile.y , 0), gameObject.tag)){
+            else if(!isEmptyTilePlace(new Vector3Int(tile.position.x+1, tile.position.y , 0), gameObject.tag)){
                 return true;
             }
         }
         return false;
     }
 
-    private void newTile(Vector3Int newTile){
-        Vector3Int tileToAdd = PlayerController.instance.getLastAddedTile() + newTile;
-        PlayerController.instance.setLastAddedTile(tileToAdd);
-        tilemap.SetTile(tileToAdd, tileBase);
-        PlayerController.instance.AddToPlayerTiles(tileToAdd);
+    private void newTile(Vector3Int newTileOffset){
+        Vector3Int newTilePos = PlayerController.instance.getLastAddedTile().position + newTileOffset;
+        Cube cubeToAdd = new Cube(newTilePos, Cube.CubeType.NEUTRAL_CUBE);
+        PlayerController.instance.setLastAddedTile(cubeToAdd);
+        tilemap.SetTile(newTilePos, tileBase);
+        PlayerController.instance.AddToPlayerTiles(cubeToAdd);
     }
 }
