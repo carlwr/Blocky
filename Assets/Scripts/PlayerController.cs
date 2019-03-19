@@ -3,6 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+public class Cube
+{
+    public enum CubeType
+    {
+        NEUTRAL_CUBE
+    }
+    
+    public Vector3Int position;
+    public CubeType type;
+
+    public Cube(Vector3Int pos, CubeType type)
+    {
+        this.position = pos;
+        this.type = type;
+    }
+}
+
 public class PlayerController : MonoBehaviour {
 
 	public enum State{
@@ -14,8 +31,8 @@ public class PlayerController : MonoBehaviour {
     public static PlayerController instance;
 
 	public State state;
-	private Vector3Int lastAddedTile;
-    private List<Vector3Int> playerTiles;
+	private Cube lastAddedTile;
+    private List<Cube> playerTiles;
 	
     
     private float aButtonDown = 0;
@@ -27,7 +44,7 @@ public class PlayerController : MonoBehaviour {
 	public TileBase tb;
 
 
-    public Vector3Int getLastAddedTile(){
+    public Cube getLastAddedTile(){
         return lastAddedTile;
     }
 
@@ -38,14 +55,14 @@ public class PlayerController : MonoBehaviour {
         lastAddedTile = playerTiles[tileCount - 2];
     }
 
-    public void setLastAddedTile(Vector3Int newTilePos){
-        lastAddedTile = newTilePos;
+    public void setLastAddedTile(Cube newTile){
+        lastAddedTile = newTile;
     }
 
-    public List<Vector3Int> getPlayerTiles(){
+    public List<Cube> getPlayerTiles(){
         return playerTiles;
     }
-    public void AddToPlayerTiles(Vector3Int newTile){
+    public void AddToPlayerTiles(Cube newTile){
         playerTiles.Add(newTile);
     }
 
@@ -93,8 +110,8 @@ public class PlayerController : MonoBehaviour {
     // Use this for initialization
      void Start () {
 		state = State.NORMAL;
-		playerTiles = new List<Vector3Int>();
-        lastAddedTile = new Vector3Int(0,0,0);
+		playerTiles = new List<Cube>();
+        lastAddedTile = new Cube(new Vector3Int(0,0,0), Cube.CubeType.NEUTRAL_CUBE);
         playerTiles.Add(lastAddedTile);
         
 	}
