@@ -174,6 +174,7 @@ public class PlayerMovement : TilemapController
 	}
 	void addTileUpdate(){
 
+
         //When we are adding a tile, make everything slow-motion!
         if(Time.timeScale == 1.0f)
         {
@@ -314,17 +315,18 @@ public class PlayerMovement : TilemapController
 	
 	void OnCollisionEnter2D(Collision2D other)
 	{
-        
+        if( PlayerController.instance.state != PlayerController.State.ADD_TILE){
 
-		if(other.contacts[0].normal == new Vector2(1, 0))
-		{
-            wallNormal = new Vector2(1,0);
-            PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
-		}
-        if(other.contacts[0].normal == new Vector2(-1, 0))
-        {
-            wallNormal = new Vector2(-1, 0);
-            PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
+            if(other.contacts[0].normal == new Vector2(1, 0))
+            {
+                wallNormal = new Vector2(1,0);
+                PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
+            }
+            if(other.contacts[0].normal == new Vector2(-1, 0))
+            {
+                wallNormal = new Vector2(-1, 0);
+                PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
+            }
         }
 	}
     
@@ -333,12 +335,15 @@ public class PlayerMovement : TilemapController
 	
     void OnCollisionExit2D(Collision2D other)
     {
-        if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE){
-            if(!isAnyTileOnWall()){
-                PlayerController.instance.state = PlayerController.State.NORMAL;
-            }
-        }
         
+        if( PlayerController.instance.state != PlayerController.State.ADD_TILE){
+
+            if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE){
+                if(!isAnyTileOnWall()){
+                    PlayerController.instance.state = PlayerController.State.NORMAL;
+                }
+            }
+        }        
     }
 
     void OnTriggerEnter2D(Collider2D other)
