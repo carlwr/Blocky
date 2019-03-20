@@ -23,10 +23,21 @@ public class ButtonTilemap : TilemapController
     {
         if (tilemap != null && collider.gameObject.tag == "Player")
         {
+            print("TRIGGER");
             Vector2 hitPosition = GetComponent<Collider2D>().ClosestPoint(collider.transform.position);
             Vector3Int hitPositionInTile = tilemap.WorldToCell(hitPosition);
-            TileBase tb = tilemap.GetTile(hitPositionInTile);
-            if(tb != null && tb.name == "button"){
+            TileBase tilebase = null;
+            for(int i = -1 ; i <= 1; i++){
+                for(int j = -1 ; j <= 1; j++){
+                    TileBase tb = tilemap.GetTile(new Vector3Int(hitPositionInTile.x + i, hitPositionInTile.y + j, 0));
+                    if(tb != null && tb.name == "button"){
+                        tilebase = tilemap.GetTile(new Vector3Int(hitPositionInTile.x + i, hitPositionInTile.y + j, 0));
+                        hitPositionInTile = new Vector3Int(hitPositionInTile.x + i, hitPositionInTile.y + j, 0);
+                    }   
+                }   
+            }
+            
+            if(tilebase != null){
                 
                 tileMapCollider.isTrigger = false;
                 BoundsInt bounds = tilemap.cellBounds;
