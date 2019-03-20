@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: button
+  m_Name: button_pressed
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 2530564911472380330, guid: d0ad50042db204248bd2aba4cdbff5b8,
+  m_Sprite: {fileID: 1763989116612304091, guid: d0ad50042db204248bd2aba4cdbff5b8,
     type: 3}
-  m_Color: {r: 0.6603774, g: 0.64791745, b: 0.64791745, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0
