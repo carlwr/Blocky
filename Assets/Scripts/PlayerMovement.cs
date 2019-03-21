@@ -99,8 +99,28 @@ public class PlayerMovement : TilemapController
 		
 	}
 
+    IEnumerator removeDebugText(){
+        yield return new WaitForSeconds(2);
+        UIController.instance.jumpType.text = "";
+    } 
+
 	void normalUpdate(){
         
+        if(Input.GetKeyUp("j")){
+            if(usingSecondaryJump){
+                usingSecondaryJump = false;
+                UIController.instance.jumpType.text = "using normal jump";
+                StartCoroutine(removeDebugText());
+            }
+            else
+            {
+                
+                UIController.instance.jumpType.text = "using secondary jump";
+                usingSecondaryJump = true;    
+                 StartCoroutine(removeDebugText());
+            }
+             
+        }
         
 		orientation = new Vector2(0,0);
         //increase gravity for player on way down for feel

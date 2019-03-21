@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50be7b629c8b0c642ac3b216c1e55631, type: 3}
   m_Name: BuildingTeacher2
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: c94880228c61e484ebbe487c45e9efd7, type: 3}
+  m_Sprite: {fileID: 4752036535365946808, guid: 4509c636a50304241bb6322e5c4ae42e,
+    type: 3}
   m_Color: {r: 0.5188679, g: 0.23495905, b: 0.46481326, a: 1}
   m_Transform:
     e00: 1
