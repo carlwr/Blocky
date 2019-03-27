@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 1
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: tile_green
+  m_Name: playerHead
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 6817495437695232509, guid: 3cb6a7089d7c90244a12db762f1beccf,
     type: 3}

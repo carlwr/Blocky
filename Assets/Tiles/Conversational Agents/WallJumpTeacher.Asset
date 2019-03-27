@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50be7b629c8b0c642ac3b216c1e55631, type: 3}
   m_Name: WallJumpTeacher
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 4752036535365946808, guid: 4509c636a50304241bb6322e5c4ae42e,
+  m_Sprite: {fileID: 3950332256670168490, guid: 852c8f2b029d0524c89bde5645dad6cc,
     type: 3}
   m_Color: {r: 0.6132076, g: 0.32395872, b: 0.32395872, a: 1}
   m_Transform:
