@@ -7,14 +7,17 @@ public class Cube
 {
     public enum CubeType
     {
+        HEAD_CUBE,
         NEUTRAL_CUBE
     }
     
     public Vector3Int position;
     public CubeType type;
+    TileBase tb;
 
-    public Cube(Vector3Int pos, CubeType type)
+    public Cube(Vector3Int pos, CubeType type, TileBase tileBase)
     {
+        this.tb = tileBase;
         this.position = pos;
         this.type = type;
     }
@@ -111,7 +114,7 @@ public class PlayerController : MonoBehaviour {
      void Start () {
 		state = State.NORMAL;
 		playerTiles = new List<Cube>();
-        lastAddedTile = new Cube(new Vector3Int(0,0,0), Cube.CubeType.NEUTRAL_CUBE);
+        lastAddedTile = new Cube(new Vector3Int(0,0,0), Cube.CubeType.NEUTRAL_CUBE, tb);
         playerTiles.Add(lastAddedTile);
         
 	}

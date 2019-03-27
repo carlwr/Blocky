@@ -7,7 +7,7 @@ public class PlayerMovement : TilemapController
     
 	[Range(10,200)]public float speed;
 	[Range(10,150)]public float jumpForce;
-    public TileBase tileBase;
+    public TileBase bodyBase;
     public float maxWallSlideSpeed = 2;
     [Range(0,50)]public float jumpMultiplier = 10f;
     [Range(0,150)]public float interruptedJumpMultiplier = 80f;
@@ -26,7 +26,8 @@ public class PlayerMovement : TilemapController
     override protected void Start()
     {
         base.Start();
-        rb2d = GetComponent<Rigidbody2D> ();
+        rb2d = GetComponent<Rigidbody2D> (); 
+        
         
     }
 
@@ -414,9 +415,9 @@ public class PlayerMovement : TilemapController
 
     private void newTile(Vector3Int newTileOffset){
         Vector3Int newTilePos = PlayerController.instance.getLastAddedTile().position + newTileOffset;
-        Cube cubeToAdd = new Cube(newTilePos, Cube.CubeType.NEUTRAL_CUBE);
+        Cube cubeToAdd = new Cube(newTilePos, Cube.CubeType.NEUTRAL_CUBE, bodyBase);
         PlayerController.instance.setLastAddedTile(cubeToAdd);
-        tilemap.SetTile(newTilePos, tileBase);
+        tilemap.SetTile(newTilePos, bodyBase);
         PlayerController.instance.AddToPlayerTiles(cubeToAdd);
     }
 }
