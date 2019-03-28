@@ -38,7 +38,7 @@ public class ConversationalController : MonoBehaviour
             Debug.Log("index:" + index);
             Debug.Log("array length :" + gibberishNpcTalking.Length);
 
-            int gibberishID = EazySoundManager.PlaySound(gibberishNpcTalking[index], 0.5f);
+            //int gibberishID = EazySoundManager.PlaySound(gibberishNpcTalking[index], 0.5f);
             for (int i = (int)collider.transform.position.x - 3; i < (int)collider.transform.position.x + 3; i++){
                 for(int j = (int)collider.transform.position.y - 3; j < (int)collider.transform.position.y + 3; j++){
                     var pPos = tilemap.WorldToCell(new Vector2(i,j));

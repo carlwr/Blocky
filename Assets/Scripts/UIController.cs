@@ -11,7 +11,7 @@ public class UIController : MonoBehaviour
     RectTransform CanvasRect;
     public Camera camera;
 
-    private Vector3 conversationPosition;
+    public Vector3 conversationPosition;
     public TextMeshProUGUI boxesUnused;
 
     public TextMeshProUGUI conversation;
@@ -29,6 +29,7 @@ public class UIController : MonoBehaviour
         GameObject canvas = GameObject.Find("Canvas");
         
         CanvasRect=canvas.GetComponent<RectTransform>();
+        conversation.text = "LOL";
 
     }
 

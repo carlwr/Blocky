@@ -94,10 +94,6 @@ public class PlayerMovement : TilemapController
 		
 	}
 
-    IEnumerator removeDebugText(){
-        yield return new WaitForSeconds(2);
-        UIController.instance.jumpType.text = "";
-    } 
 
 	void normalUpdate(){
         
@@ -116,7 +112,7 @@ public class PlayerMovement : TilemapController
             {
                 PlayerController.instance.state = PlayerController.State.NORMAL;
             }
-            canJump = true;
+        canJump = true;
         }
         else{
             canJump = false;
@@ -137,11 +133,7 @@ public class PlayerMovement : TilemapController
             Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
             lavaDeathAudio.Pitch = 1f;
 
-            
-}
-
-        
-
+            }
         
         if (Input.GetButton("Left"))
         {
@@ -180,7 +172,7 @@ public class PlayerMovement : TilemapController
             PlayerController.instance.state = PlayerController.State.ADD_TILE;
         }
 
-        
+        //max speed
         Vector3 v = rb2d.velocity;
         if(v.x < -maxSpeed){
             v.x = -maxSpeed;
