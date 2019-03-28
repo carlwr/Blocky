@@ -13,7 +13,7 @@ public class Cube
     
     public Vector3Int position;
     public CubeType type;
-    TileBase tb;
+    public TileBase tb;
 
     public Cube(Vector3Int pos, CubeType type, TileBase tileBase)
     {
@@ -36,6 +36,7 @@ public class PlayerController : MonoBehaviour {
 	public State state;
 	private Cube lastAddedTile;
     private List<Cube> playerTiles;
+    
 	
     
     private float aButtonDown = 0;
@@ -53,6 +54,7 @@ public class PlayerController : MonoBehaviour {
 
     public void deleteLastAddedTile()
     {
+        
         int tileCount = playerTiles.Count;
         playerTiles.Remove(lastAddedTile);
         lastAddedTile = playerTiles[tileCount - 2];

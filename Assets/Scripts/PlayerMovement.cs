@@ -14,6 +14,7 @@ public class PlayerMovement : TilemapController
     [Range(0,1)]public float wallSlideMultiplier = 0.5f;
     public bool usingSecondaryJump = false;
 
+    public GameObject LAT; //empty gameobject for the cinemachine to follow
 
     private float addTileAddOn = 0.05f;
     private bool chooseNextBox;
@@ -27,7 +28,7 @@ public class PlayerMovement : TilemapController
     {
         base.Start();
         rb2d = GetComponent<Rigidbody2D> (); 
-        
+        LAT = GameObject.Find("player follow");
         
     }
 
@@ -52,6 +53,7 @@ public class PlayerMovement : TilemapController
 		orientation = new Vector2(0,0);
     }
 
+    
     //A secondary kind of jump to test different feels
     //(Instead of ordinary)
     void jump_secondary(){
@@ -224,6 +226,9 @@ public class PlayerMovement : TilemapController
                 PlayerController.instance.deleteLastAddedTile();
                 PlayerController.instance.boxesInInventory++;
                 UIController.instance.increaseBoxesUnused();
+                
+               LAT.transform.position = gameObject.transform.position + PlayerController.instance.getLastAddedTile().position;
+           
             }
             else if(PlayerController.instance.boxesInInventory > 0){
                 if (Input.GetButton("Up")
@@ -418,6 +423,10 @@ public class PlayerMovement : TilemapController
         Cube cubeToAdd = new Cube(newTilePos, Cube.CubeType.NEUTRAL_CUBE, bodyBase);
         PlayerController.instance.setLastAddedTile(cubeToAdd);
         tilemap.SetTile(newTilePos, bodyBase);
+        
+        LAT.transform.position = gameObject.transform.position + newTilePos;
+        
         PlayerController.instance.AddToPlayerTiles(cubeToAdd);
     }
+
 }
