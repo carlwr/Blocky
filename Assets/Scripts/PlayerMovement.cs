@@ -6,6 +6,7 @@ public class PlayerMovement : TilemapController
 {
     
 	[Range(10,200)]public float speed;
+	[Range(0,20000)]public float maxSpeed;
 	[Range(10,150)]public float jumpForce;
     public TileBase bodyBase;
     public float maxWallSlideSpeed = 2;
@@ -22,6 +23,9 @@ public class PlayerMovement : TilemapController
 	private Rigidbody2D rb2d;
 	private bool canJump;
 	private Vector2 orientation;
+
+    [Range(0,1)]public float WallJumpVectorWhenTowards ;
+    [Range(0,1)]public float WallJumpVectorWhenOtherDir;
 
     
     override protected void Start()
@@ -62,10 +66,10 @@ public class PlayerMovement : TilemapController
             
             //Jump type 1: Player is holding in button towards wall.
             if (orientation.x == -wallNormal.x)
-                rb2d.velocity = new Vector2(0.3f * wallNormal.x, 1) * jumpForce;
+                rb2d.velocity = new Vector2(WallJumpVectorWhenTowards * wallNormal.x, 1) * jumpForce;
             //Jump type 2: player is pressing button in direction opposite to wall.
             else if (orientation.x == wallNormal.x)
-                rb2d.velocity = new Vector2(0.8f * wallNormal.x, 1) * jumpForce;
+                rb2d.velocity = new Vector2(WallJumpVectorWhenOtherDir * wallNormal.x, 1) * jumpForce;
             //Jump type 3: Player is not moving in x direction.
             else
                 rb2d.velocity += new Vector2(0, 1) * jumpForce;
@@ -87,10 +91,10 @@ public class PlayerMovement : TilemapController
                 rb2d.velocity += new Vector2(0, 1) * jumpForce;
             //Jump type 1: Player is holding in button towards wall.
             else if (Mathf.Sign(orientation.x) == Mathf.Sign(-wallNormal.x))
-                rb2d.velocity = new Vector2(0.9f * wallNormal.x, 1) * jumpForce;
+                rb2d.velocity = new Vector2(WallJumpVectorWhenTowards * wallNormal.x, 1) * jumpForce;
             //Jump type 2: player is pressing button in direction opposite to wall.
             else if (Mathf.Sign(orientation.x) == Mathf.Sign(wallNormal.x))
-                rb2d.velocity = new Vector2(0.8f * wallNormal.x, 1) * jumpForce;
+                rb2d.velocity = new Vector2(WallJumpVectorWhenOtherDir * wallNormal.x, 1) * jumpForce;
             
             PlayerController.instance.state = PlayerController.State.NORMAL;
         }
@@ -193,6 +197,18 @@ public class PlayerMovement : TilemapController
         if(Input.GetButtonDown("BuildingButton")){
             PlayerController.instance.state = PlayerController.State.ADD_TILE;
         }
+
+        
+        Vector3 v = rb2d.velocity;
+        if(v.x < -maxSpeed){
+            v.x = -maxSpeed;
+        }
+        else if(v.x > maxSpeed){
+            v.x = maxSpeed;
+        }
+        rb2d.velocity = v;
+    
+
         
 	}
 	void addTileUpdate(){
