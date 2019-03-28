@@ -139,10 +139,10 @@ public class PlayerMovement : TilemapController
             //Put audios to right speed
             Audio backgroundMusicAudio = EazySoundManager.GetAudio(backgroundMusic);
             backgroundMusicAudio.Pitch = 1f;
-            Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
-            jumpAudio.Pitch = 1f;
-            Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
-            lavaDeathAudio.Pitch = 1f;
+            //Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
+            //jumpAudio.Pitch = 1f;
+            //Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
+            //lavaDeathAudio.Pitch = 1f;
 
             
 }
@@ -210,10 +210,10 @@ public class PlayerMovement : TilemapController
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
             Audio backgroundMusicAudio = EazySoundManager.GetAudio(backgroundMusic);
             backgroundMusicAudio.Pitch = 0.5f;
-            Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
-            jumpAudio.Pitch = 0.5f;
-            Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
-            lavaDeathAudio.Pitch = 0.5f;
+           // Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
+            //jumpAudio.Pitch = 0.5f;
+            //Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
+            //lavaDeathAudio.Pitch = 0.5f;
         }
 
         if(Input.GetButtonUp("BuildingButton")){

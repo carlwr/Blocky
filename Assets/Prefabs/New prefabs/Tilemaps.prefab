@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 6641006337246826313}
   - component: {fileID: 6641006337246826318}
   - component: {fileID: 6641006337246826312}
-  - component: {fileID: 6641006337246826315}
   m_Layer: 0
   m_Name: Agents
   m_TagString: Untagged
@@ -177,18 +176,6 @@ TilemapCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_MaximumTileChangeCount: 1000
---- !u!114 &6641006337246826315
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6641006337246826316}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b2f470a8fed4314fb53403830e644b6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6641006337441965670
 GameObject:
   m_ObjectHideFlags: 0
@@ -16745,11 +16732,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 170
+  maxSpeed: 0
   jumpForce: 70
   bodyBase: {fileID: 0}
   maxWallSlideSpeed: 2
   jumpMultiplier: 10
   interruptedJumpMultiplier: 80
   wallSlideMultiplier: 0.612
-  usingSecondaryJump: 1
+  runMultiplier: 80
   LAT: {fileID: 0}
+  jumpSoundClip: {fileID: 0}
+  lavaDeathSoundClip: {fileID: 0}
+  blockOptainedSoundClip: {fileID: 0}
+  backgroundMusic: {fileID: 0}
+  WallJumpVectorWhenTowards: 0
+  WallJumpVectorWhenOtherDir: 0
