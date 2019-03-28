@@ -15,6 +15,7 @@ public class PlayerMovement : TilemapController
     [Range(0,50)]public float jumpMultiplier = 10f;
     [Range(0,150)]public float interruptedJumpMultiplier = 80f;
     [Range(0,1)]public float wallSlideMultiplier = 0.5f;
+    [Range(0,150)]public float runMultiplier = 80f;
 
     public GameObject LAT; //empty gameobject for the cinemachine to follow
 
@@ -72,8 +73,9 @@ public class PlayerMovement : TilemapController
             //Jump sound played
             int jumpSoundID = EazySoundManager.PlaySound(jumpSoundClip, 0.5f);
             //Jump type 3: Player is not moving in x direction.
-            if (orientation.x == 0)
+            if (orientation.x == 0){
                 rb2d.velocity += new Vector2(0, 1) * jumpForce;
+            }
             //Jump type 1: Player is holding in button towards wall.
             else if (Mathf.Sign(orientation.x) == Mathf.Sign(-wallNormal.x))
                 rb2d.velocity = new Vector2(WallJumpVectorWhenTowards * wallNormal.x, 1) * jumpForce;
@@ -104,6 +106,12 @@ public class PlayerMovement : TilemapController
             rb2d.velocity += Vector2.up * Physics2D.gravity.y * (jumpMultiplier - 1) * Time.fixedDeltaTime;
         }else if(rb2d.velocity.y > 0 && !Input.GetButton("Jump")){
              rb2d.velocity += Vector2.up * Physics2D.gravity.y * (interruptedJumpMultiplier - 1) * Time.fixedDeltaTime;
+        }
+
+        if(rb2d.velocity.x < 0 && !Input.GetButton("Left")){
+            rb2d.velocity += Vector2.right * runMultiplier * Time.fixedDeltaTime;
+        }else if(rb2d.velocity.x > 0 && !Input.GetButton("Right")){
+             rb2d.velocity += Vector2.left * runMultiplier * Time.fixedDeltaTime;
         }
 
         if(isAnyTileGrounded()){
@@ -328,7 +336,6 @@ public class PlayerMovement : TilemapController
 
         if(rb2d.velocity.y < -maxWallSlideSpeed)
         {
-            
             rb2d.velocity.Set(rb2d.velocity.x, -maxWallSlideSpeed);
         }
         //Check for when no longer touching wall
