@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Hellmade.Sound;
+
 public class PlayerMovement : TilemapController
 {
     
@@ -17,6 +19,13 @@ public class PlayerMovement : TilemapController
 
     public GameObject LAT; //empty gameobject for the cinemachine to follow
 
+    public AudioClip jumpSoundClip;
+    public AudioClip lavaDeathSoundClip;
+    public AudioClip blockOptainedSoundClip;
+    public AudioClip backgroundMusic;
+    public AudioClip[] gibberishNpcTalking;
+
+
     private float addTileAddOn = 0.05f;
     private bool chooseNextBox;
     private Vector2 wallNormal;
@@ -31,9 +40,9 @@ public class PlayerMovement : TilemapController
     override protected void Start()
     {
         base.Start();
-        rb2d = GetComponent<Rigidbody2D> (); 
+        rb2d = GetComponent<Rigidbody2D> ();
+        int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
         LAT = GameObject.Find("player follow");
-        
     }
 
     void Update()
@@ -64,6 +73,8 @@ public class PlayerMovement : TilemapController
           if (PlayerController.instance.state == PlayerController.State.WALL_SLIDE)
         {
             
+            //Jump sound played
+            int jumpSoundID = EazySoundManager.PlaySound(jumpSoundClip, 0.5f);
             //Jump type 1: Player is holding in button towards wall.
             if (orientation.x == -wallNormal.x)
                 rb2d.velocity = new Vector2(WallJumpVectorWhenTowards * wallNormal.x, 1) * jumpForce;
@@ -77,7 +88,10 @@ public class PlayerMovement : TilemapController
         }
         else if ( canJump)
 		{
-			rb2d.velocity += new Vector2(0, 1) * jumpForce;
+            //Jump sound played
+            int jumpSoundID = EazySoundManager.PlaySound(jumpSoundClip, 0.5f);
+
+            rb2d.velocity += new Vector2(0, 1) * jumpForce;
             PlayerController.instance.state = PlayerController.State.NORMAL;
 		}
     }
@@ -85,7 +99,8 @@ public class PlayerMovement : TilemapController
     void jump(){
         if (PlayerController.instance.state == PlayerController.State.WALL_SLIDE)
         {
-            
+            //Jump sound played
+            int jumpSoundID = EazySoundManager.PlaySound(jumpSoundClip, 0.5f);
             //Jump type 3: Player is not moving in x direction.
             if (orientation.x == 0)
                 rb2d.velocity += new Vector2(0, 1) * jumpForce;
@@ -100,9 +115,12 @@ public class PlayerMovement : TilemapController
         }
         else if ( canJump)
 		{
-			rb2d.velocity += new Vector2(0, 1) * jumpForce;
-            PlayerController.instance.state = PlayerController.State.NORMAL;
-		}
+            //Jump sound played
+            int jumpSoundID = EazySoundManager.PlaySound(jumpSoundClip, 0.5f);
+            rb2d.velocity += new Vector2(0, 1) * jumpForce;
+            PlayerController.instance.state = PlayerController.State.NORMAL;            
+
+        }
 		
 	}
 
@@ -393,16 +411,21 @@ public class PlayerMovement : TilemapController
         if (other.tag == "Pickups")
         {
             Debug.Log("Pickup Gained!");
+            //blockOptained sound played
+            int lavaDeathSoundID = EazySoundManager.PlaySound(blockOptainedSoundClip, 0.5f);
             PlayerController.instance.boxesInInventory ++;
             UIController.instance.increaseBoxesUnused();
             orientation = new Vector3(0, 0, 0);
             //PlayerController.instance.state = PlayerController.State.ADD_TILE;
             chooseNextBox = false;
+            
         }
 
         if (other.tag == "Obstacle")
         {
             Debug.Log("Obstacle Touched");
+            //lava sound played
+            int lavaDeathSoundID = EazySoundManager.PlaySound(lavaDeathSoundClip, 0.5f);
             PlayerController.instance.resetLevel();
         }
     }
