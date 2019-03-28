@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Hellmade.Sound;
 public class ConversationalController : MonoBehaviour
 {
-
+    public AudioClip[] gibberishNpcTalking;
+    public System.Random rand = new System.Random();
     Tilemap tilemap;
     // Start is called before the first frame update
     void Start()
@@ -29,7 +31,12 @@ public class ConversationalController : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         if(collider.tag == "Player"){
-            for(int i = (int)collider.transform.position.x - 3; i < (int)collider.transform.position.x + 3; i++){
+            
+            // Generate a random index less than the size of the array.  
+            int index = rand.Next(gibberishNpcTalking.Length);
+            //Jump sound played
+            int gibberishID = EazySoundManager.PlaySound(gibberishNpcTalking[index], 0.5f);
+            for (int i = (int)collider.transform.position.x - 3; i < (int)collider.transform.position.x + 3; i++){
                 for(int j = (int)collider.transform.position.y - 3; j < (int)collider.transform.position.y + 3; j++){
                     var pPos = tilemap.WorldToCell(new Vector2(i,j));
                     if(tilemap.GetTile(pPos) != null){
