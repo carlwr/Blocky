@@ -165,9 +165,21 @@ public class PlayerMovement : TilemapController
         //Make it not slow motion as soon as the block has been selected and state is normal again.
         if(Time.timeScale != 1.0f)
         {
-            Time.timeScale = 1.0f;
+            
+            Time.timeScale = 1.0f;      
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
-        }
+
+
+            //Put audios to right speed
+            Audio backgroundMusicAudio = EazySoundManager.GetAudio(backgroundMusic);
+            backgroundMusicAudio.Pitch = 1f;
+            Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
+            jumpAudio.Pitch = 1f;
+            Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
+            lavaDeathAudio.Pitch = 1f;
+
+            
+}
 
         
 
@@ -221,6 +233,12 @@ public class PlayerMovement : TilemapController
         {
             Time.timeScale = 0.1f;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
+            Audio backgroundMusicAudio = EazySoundManager.GetAudio(backgroundMusic);
+            backgroundMusicAudio.Pitch = 0.5f;
+            Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
+            jumpAudio.Pitch = 0.5f;
+            Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
+            lavaDeathAudio.Pitch = 0.5f;
         }
 
         if(Input.GetButtonUp("BuildingButton")){
