@@ -16,7 +16,7 @@ TagManager:
   - UI
   - 
   - 
-  - cinamachineCollider
+  - Forground
   - backGround
   - cameraCollider
   - 
@@ -41,6 +41,21 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: Space
+    uniqueID: 1855709025
+    locked: 0
+  - name: Background
+    uniqueID: 524337915
+    locked: 0
+  - name: PlattformBackground
+    uniqueID: 1597104369
+    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: PlattformForground
+    uniqueID: 382685511
+    locked: 0
+  - name: Forground
+    uniqueID: 3398808145
     locked: 0
