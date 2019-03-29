@@ -7,6 +7,7 @@ TagManager:
   - Pickups
   - Obstacle
   - conversationAgents
+  - Plattform
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Forground
   - backGround
   - cameraCollider
-  - 
+  - Plattform
   - 
   - 
   - 

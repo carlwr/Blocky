@@ -23,7 +23,7 @@ public class ButtonTilemap : TilemapController
     {
         if (tilemap != null && collider.gameObject.tag == "Player")
         {
-            print("TRIGGER");
+            gameObject.tag = "Plattform";
             Vector2 hitPosition = GetComponent<Collider2D>().ClosestPoint(collider.transform.position);
             Vector3Int hitPositionInTile = tilemap.WorldToCell(hitPosition);
             TileBase tilebase = null;
@@ -68,5 +68,7 @@ public class ButtonTilemap : TilemapController
                tilemap.SetTile(bridgeTiles[i], bridgeClosed);
         }
         tileMapCollider.isTrigger = true;
+        
+        gameObject.tag = "Untagged";
     }
 }

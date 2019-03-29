@@ -447,7 +447,19 @@ public class PlayerMovement : TilemapController
     bool isAnyTileGrounded(){
         foreach (Cube tile in PlayerController.instance.getPlayerTiles())
         {
-            if(!isEmptyTilePlace(new Vector3Int(tile.position.x, tile.position.y -1 , 0), gameObject.tag)){
+            
+
+            Vector3 tilemapWorld = tilemap.CellToWorld(new Vector3Int(tile.position.x, tile.position.y -1 , 0));
+            tilemapWorld.y += 0.5f;
+            tilemapWorld.x += 0.1f;
+
+            RaycastHit2D hit = Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y),
+                                                Vector2.right, 0.8f);
+                                                
+            Debug.DrawRay(new Vector2(tilemapWorld.x, tilemapWorld.y), Vector2.right , Color.green,0.1f);
+            
+            
+            if(!(hit.collider == null || hit.collider.tag != "Plattform")){
                 return true;
             }
         }
