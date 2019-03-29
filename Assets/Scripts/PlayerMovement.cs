@@ -30,6 +30,9 @@ public class PlayerMovement : TilemapController
 	private Rigidbody2D rb2d;
 	private bool canJump;
 	private Vector2 orientation;
+    private PlayerController player;
+
+    public GameObject currentCheckPoint;
 
     [Range(0,1)]public float WallJumpVectorWhenTowards ;
     [Range(0,1)]public float WallJumpVectorWhenOtherDir;
@@ -41,6 +44,7 @@ public class PlayerMovement : TilemapController
         rb2d = GetComponent<Rigidbody2D> ();
         int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
         LAT = GameObject.Find("player follow");
+        player = FindObjectOfType<PlayerController>();
     }
 
     void Update()
@@ -393,9 +397,25 @@ public class PlayerMovement : TilemapController
         if (other.tag == "Obstacle")
         {
             Debug.Log("Obstacle Touched");
+            Debug.Log("current checkpoint");
+            Debug.Log(currentCheckPoint.transform.position);
+            Debug.Log("Player pos");            
+            Debug.Log(player.transform.position);
+            rb2d.transform.position = currentCheckPoint.transform.position;
+            Debug.Log("player sent back");
+
+
             //lava sound played
             int lavaDeathSoundID = EazySoundManager.PlaySound(lavaDeathSoundClip, 0.5f);
-            PlayerController.instance.resetLevel();
+            //PlayerController.instance.resetLevel();
+        }
+        if (other.tag == "checkPoint")
+        {
+            Debug.Log("CheckPoint reached");
+            currentCheckPoint = other.gameObject;
+            //lava sound played
+            //int lavaDeathSoundID = EazySoundManager.PlaySound(lavaDeathSoundClip, 0.5f);
+            //PlayerController.instance.resetLevel();
         }
     }
 

@@ -7,6 +7,7 @@ TagManager:
   - Pickups
   - Obstacle
   - conversationAgents
+  - checkPoint
   layers:
   - Default
   - TransparentFX
