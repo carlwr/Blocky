@@ -8,7 +8,8 @@ public class PlayerMovement : TilemapController
 {
     
 	[Range(10,200)]public float speed;
-	[Range(0,20000)]public float maxSpeed;
+	[Range(0,200)]public float maxSpeedX;
+	[Range(0,200)]public float maxSpeedY;
 	[Range(10,150)]public float jumpForce;
     public TileBase bodyBase;
     public float maxWallSlideSpeed = 2;
@@ -23,6 +24,7 @@ public class PlayerMovement : TilemapController
     public AudioClip lavaDeathSoundClip;
     public AudioClip blockOptainedSoundClip;
     public AudioClip backgroundMusic;
+
 
 
     private float addTileAddOn = 0.05f;
@@ -89,7 +91,19 @@ public class PlayerMovement : TilemapController
             //Jump sound played
             int jumpSoundID = EazySoundManager.PlaySound(jumpSoundClip, 0.5f);
             rb2d.velocity += new Vector2(0, 1) * jumpForce;
-            PlayerController.instance.state = PlayerController.State.NORMAL;            
+            
+            int wall = isAnyTileOnWall();
+
+            if(wall == 1 && Input.GetButton("Left")){
+                wallNormal = new Vector2(1,0);
+                PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
+            }else if(wall == 0&& Input.GetButton("Right")){
+                wallNormal = new Vector2(-1, 0);
+                PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
+            }else{
+                PlayerController.instance.state = PlayerController.State.NORMAL;
+            }
+                        
 
         }
 		
@@ -139,13 +153,13 @@ public class PlayerMovement : TilemapController
             //Put audios to right speed
             Audio backgroundMusicAudio = EazySoundManager.GetAudio(backgroundMusic);
             backgroundMusicAudio.Pitch = 1f;
-            //Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
-            //jumpAudio.Pitch = 1f;
-            //Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
-            //lavaDeathAudio.Pitch = 1f;
+            Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
+            jumpAudio.Pitch = 1f;
+            Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
+            lavaDeathAudio.Pitch = 1f;
 
             
-}
+        }
 
         
 
@@ -189,11 +203,17 @@ public class PlayerMovement : TilemapController
 
         
         Vector3 v = rb2d.velocity;
-        if(v.x < -maxSpeed){
-            v.x = -maxSpeed;
+        if(v.x < -maxSpeedX){
+            v.x = -maxSpeedX;
         }
-        else if(v.x > maxSpeed){
-            v.x = maxSpeed;
+        else if(v.x > maxSpeedX){
+            v.x = maxSpeedX;
+        }
+        if(v.y < -maxSpeedY){
+            v.y = -maxSpeedY;
+        }
+        else if(v.y > maxSpeedY){
+            v.y = maxSpeedY;
         }
         rb2d.velocity = v;
     
@@ -210,14 +230,30 @@ public class PlayerMovement : TilemapController
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
             Audio backgroundMusicAudio = EazySoundManager.GetAudio(backgroundMusic);
             backgroundMusicAudio.Pitch = 0.5f;
-           // Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
-            //jumpAudio.Pitch = 0.5f;
-            //Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
-            //lavaDeathAudio.Pitch = 0.5f;
+            Audio jumpAudio = EazySoundManager.GetAudio(jumpSoundClip);
+            jumpAudio.Pitch = 0.5f;
+            Audio lavaDeathAudio = EazySoundManager.GetAudio(lavaDeathSoundClip);
+            lavaDeathAudio.Pitch = 0.5f;
         }
 
         if(Input.GetButtonUp("BuildingButton")){
+                if(isAnyTileGrounded()){
+                    
                 PlayerController.instance.state = PlayerController.State.NORMAL;
+                }
+                else{
+                    
+                    int wall = isAnyTileOnWall();
+                    if(wall == 1){
+                        wallNormal = new Vector2(1,0);
+                        PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
+                    }else if(wall == 0){
+                        wallNormal = new Vector2(-1, 0);
+                        PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
+                    }else{
+                        PlayerController.instance.state = PlayerController.State.NORMAL;
+                }
+            }
         }
 
 
@@ -365,8 +401,7 @@ public class PlayerMovement : TilemapController
             }
         }
 	}
-    
-
+ 
    
 	
     void OnCollisionExit2D(Collision2D other)
@@ -375,7 +410,7 @@ public class PlayerMovement : TilemapController
         if( PlayerController.instance.state != PlayerController.State.ADD_TILE){
 
             if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE){
-                if(!isAnyTileOnWall()){
+                if(isAnyTileOnWall() == -1){
                     PlayerController.instance.state = PlayerController.State.NORMAL;
                 }
             }
@@ -419,18 +454,18 @@ public class PlayerMovement : TilemapController
         return false;
     }
 
-    bool isAnyTileOnWall(){
+    int isAnyTileOnWall(){
         foreach (Cube tile in PlayerController.instance.getPlayerTiles())
         {
             if(!isEmptyTilePlace(new Vector3Int(tile.position.x-1, tile.position.y , 0), gameObject.tag)){
-                return true;
+                return 1;
             }
             
             else if(!isEmptyTilePlace(new Vector3Int(tile.position.x+1, tile.position.y , 0), gameObject.tag)){
-                return true;
+                return 0;
             }
         }
-        return false;
+        return -1;
     }
 
     private void newTile(Vector3Int newTileOffset){
