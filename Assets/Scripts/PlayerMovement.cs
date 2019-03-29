@@ -199,6 +199,11 @@ public class PlayerMovement : TilemapController
 
         if(Input.GetButtonDown("BuildingButton")){
             PlayerController.instance.state = PlayerController.State.ADD_TILE;
+            
+            PlayerController.instance.setWButton(0);
+            PlayerController.instance.setSButton(0);
+            PlayerController.instance.setAButton(0);
+            PlayerController.instance.setDButton(0);
         }
 
         
@@ -421,7 +426,6 @@ public class PlayerMovement : TilemapController
     {
         if (other.tag == "Pickups")
         {
-            Debug.Log("Pickup Gained!");
             //blockOptained sound played
             int lavaDeathSoundID = EazySoundManager.PlaySound(blockOptainedSoundClip, 0.5f);
             PlayerController.instance.boxesInInventory ++;
@@ -434,7 +438,6 @@ public class PlayerMovement : TilemapController
 
         if (other.tag == "Obstacle")
         {
-            Debug.Log("Obstacle Touched");
             //lava sound played
             int lavaDeathSoundID = EazySoundManager.PlaySound(lavaDeathSoundClip, 0.5f);
             PlayerController.instance.resetLevel();

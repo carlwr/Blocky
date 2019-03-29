@@ -23,6 +23,7 @@ public class ButtonTilemap : TilemapController
     {
         if (tilemap != null && collider.gameObject.tag == "Player")
         {
+            Debug.Log("Pressed Button");
             gameObject.tag = "Plattform";
             Vector2 hitPosition = GetComponent<Collider2D>().ClosestPoint(collider.transform.position);
             Vector3Int hitPositionInTile = tilemap.WorldToCell(hitPosition);
