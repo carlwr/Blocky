@@ -29,7 +29,7 @@ public class UIController : MonoBehaviour
         GameObject canvas = GameObject.Find("Canvas");
         
         CanvasRect=canvas.GetComponent<RectTransform>();
-        conversation.text = "LOL";
+        
 
     }
 

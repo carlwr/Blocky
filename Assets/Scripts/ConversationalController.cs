@@ -6,6 +6,8 @@ using Hellmade.Sound;
 public class ConversationalController : MonoBehaviour
 {
     public AudioClip[] gibberishNpcTalking;
+    
+    static public int[] gibberish;
     public System.Random rand = new System.Random();
     Tilemap tilemap;
     // Start is called before the first frame update
@@ -17,7 +19,6 @@ public class ConversationalController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     public void initiateConversation(){

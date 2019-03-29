@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: bridge
   m_EditorClassIdentifier: 
   m_Sprite: {fileID: 21300000, guid: 90d690235e45da1418bae10cd4ed8953, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.07450981}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
     e01: 0
