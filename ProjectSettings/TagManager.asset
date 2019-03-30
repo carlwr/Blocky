@@ -9,6 +9,7 @@ TagManager:
   - Plattform
   - Pickups
   - conversationAgents
+  - nextTiles
   layers:
   - Default
   - TransparentFX

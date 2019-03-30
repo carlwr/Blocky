@@ -254,7 +254,7 @@ public class PlayerMovement : TilemapController
                 }
                 else{
                     
-                    int wall = isAnyTileOnWall();
+                    int wall = isAnyTileOnWall2();
                     if(wall == 1){
                         wallNormal = new Vector2(1,0);
                         PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
