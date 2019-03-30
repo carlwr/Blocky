@@ -432,8 +432,8 @@ public class PlayerMovement : TilemapController
 
             //lava sound played
             int lavaDeathSoundID = EazySoundManager.PlaySound(lavaDeathSoundClip, 0.5f);
-            
-            PlayerController.instance.resetLevel();
+           
+            PlayerController.instance.resetLevelToCheckpoint();
         }
         
     }

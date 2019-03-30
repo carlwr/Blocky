@@ -104,7 +104,15 @@ public class PlayerController : MonoBehaviour {
 
     public void resetLevel()
     {
+        //Reset the level to beginning.
         Application.LoadLevel(Application.loadedLevel);
+    }
+
+    public void resetLevelToCheckpoint()
+    {
+        //Reset the level to the last checkpoint.
+        GameMaster.instance.resetLevelToCheckpoint();
+
     }
 
     void Awake()
