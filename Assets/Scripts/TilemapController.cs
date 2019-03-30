@@ -26,7 +26,8 @@ public class TilemapController : MonoBehaviour
         Debug.DrawRay(new Vector2(tilemapWorld.x, tilemapWorld.y), Vector2.zero , Color.green,0.1f);
         
         
-        if(hit.collider == null || hit.collider.tag != "Plattform" && hit.collider.tag != "Player"){
+        if(hit.collider == null || hit.collider.tag != "Plattform" && hit.collider.tag != "Player" && hit.collider.tag != "nextTiles"){
+            
             return true;
         }
         return false;
