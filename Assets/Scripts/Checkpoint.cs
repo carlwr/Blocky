@@ -5,9 +5,13 @@ using UnityEngine.Tilemaps;
 
 public class Checkpoint : MonoBehaviour
 {
+    public Sprite checkpointUnused;
+    public Sprite checkpointUsed;
+
     void OnTriggerEnter2D(Collider2D other)
     {
         if(other.CompareTag("Player")){
+            GetComponent<SpriteRenderer>().sprite = checkpointUsed;
             GameMaster.instance.lastCheckpointPos = gameObject.transform.position;
             GameMaster.instance.playerBoxesCount = PlayerController.instance.boxesInInventory 
                                                 +  PlayerController.instance.getPlayerTiles().Count-1;

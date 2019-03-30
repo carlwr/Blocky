@@ -45,7 +45,7 @@ public class PlayerMovement : TilemapController
     {
         transform.position = GameMaster.instance.lastCheckpointPos;
         base.Start();
-        rb2d = GetComponent<Rigidbody2D> ();
+        rb2d = GetComponent<Rigidbody2D>();
         int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
         LAT = GameObject.Find("player follow");
         player = FindObjectOfType<PlayerController>();
@@ -432,11 +432,6 @@ public class PlayerMovement : TilemapController
 
             //lava sound played
             int lavaDeathSoundID = EazySoundManager.PlaySound(lavaDeathSoundClip, 0.5f);
-
-            //Debug.Log("Player sent back");
-            //rb2d.transform.position = currentCheckPoint.transform.position;
-            
-
             
             PlayerController.instance.resetLevel();
         }
