@@ -16732,7 +16732,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 170
-  maxSpeed: 0
+  maxSpeedX: 0
+  maxSpeedY: 0
   jumpForce: 70
   bodyBase: {fileID: 0}
   maxWallSlideSpeed: 2
@@ -16745,5 +16746,6 @@ MonoBehaviour:
   lavaDeathSoundClip: {fileID: 0}
   blockOptainedSoundClip: {fileID: 0}
   backgroundMusic: {fileID: 0}
+  currentCheckPoint: {fileID: 0}
   WallJumpVectorWhenTowards: 0
   WallJumpVectorWhenOtherDir: 0
