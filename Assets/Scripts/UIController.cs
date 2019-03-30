@@ -37,6 +37,12 @@ public class UIController : MonoBehaviour
     void Update()
     {
         updateConversationPosition();
+        updateBoxesInInventory();
+    }
+
+    void updateBoxesInInventory(){
+        int boxesUnusedInt = PlayerController.instance.boxesInInventory;
+        boxesUnused.text = System.Convert.ToString(boxesUnusedInt);
     }
 
     void updateConversationPosition(){
@@ -54,15 +60,5 @@ public class UIController : MonoBehaviour
       
     }
 
-    public void decreaseBoxesUnused(){
-        int boxesUnusedInt = int.Parse(boxesUnused.text);
-        boxesUnusedInt --;
-        boxesUnused.text = System.Convert.ToString(boxesUnusedInt);
-    }
-
-    public void increaseBoxesUnused(){
-        int boxesUnusedInt = int.Parse(boxesUnused.text);
-        boxesUnusedInt ++;
-        boxesUnused.text = System.Convert.ToString(boxesUnusedInt);
-    }
+    
 }

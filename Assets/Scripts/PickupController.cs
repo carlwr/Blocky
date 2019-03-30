@@ -2,9 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-public class PickupController : TilemapController
+public class PickupController : MonoBehaviour
 {
+    private Tilemap tilemap;
 
+    void Start()
+    {
+        
+        tilemap = GetComponent<Tilemap>();
+        if(GameMaster.instance.pickups != null){
+            tilemap.SetTilesBlock(GameMaster.instance.pickupsBounds,GameMaster.instance.pickups);
+
+        }
+        
+        
+    }
     void OnCollisionEnter2D(Collision2D collisionInfo)
     {
         Vector3 hitPosition = Vector3.zero;
@@ -13,7 +25,7 @@ public class PickupController : TilemapController
             foreach(ContactPoint2D hit in collisionInfo.contacts){
                 hitPosition.x = hit.point.x - 0.01f * hit.normal.x;
                 hitPosition.y = hit.point.y - 0.01f * hit.normal.y;
-                print(tilemap.WorldToCell(hitPosition));
+               
                 
                 tilemap.SetTile(tilemap.WorldToCell(hitPosition), null);
                 //break;

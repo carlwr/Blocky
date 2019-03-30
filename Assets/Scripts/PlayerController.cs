@@ -118,6 +118,7 @@ public class PlayerController : MonoBehaviour {
 		playerTiles = new List<Cube>();
         lastAddedTile = new Cube(new Vector3Int(0,0,0), Cube.CubeType.NEUTRAL_CUBE, tb);
         playerTiles.Add(lastAddedTile);
+        boxesInInventory = GameMaster.instance.playerBoxesCount;
         
 	}
 	

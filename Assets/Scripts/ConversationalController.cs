@@ -36,8 +36,6 @@ public class ConversationalController : MonoBehaviour
             // Generate a random index less than the size of the array.  
             int index = rand.Next(gibberishNpcTalking.Length);
             //Jump sound played
-            Debug.Log("index:" + index);
-            Debug.Log("array length     :" + gibberishNpcTalking.Length);
 
             int gibberishID = EazySoundManager.PlaySound(gibberishNpcTalking[index], 0.5f);
             for (int i = (int)collider.transform.position.x - 3; i < (int)collider.transform.position.x + 3; i++){

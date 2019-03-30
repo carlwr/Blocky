@@ -43,6 +43,7 @@ public class PlayerMovement : TilemapController
     
     override protected void Start()
     {
+        transform.position = GameMaster.instance.lastCheckpointPos;
         base.Start();
         rb2d = GetComponent<Rigidbody2D> ();
         int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
@@ -82,8 +83,10 @@ public class PlayerMovement : TilemapController
                 rb2d.velocity += new Vector2(0, 1) * jumpForce;
             }
             //Jump type 1: Player is holding in button towards wall.
-            else if (Mathf.Sign(orientation.x) == Mathf.Sign(-wallNormal.x))
+            else if (Mathf.Sign(orientation.x) == Mathf.Sign(-wallNormal.x)){
                 rb2d.velocity = new Vector2(WallJumpVectorWhenTowards * wallNormal.x, 1) * jumpForce;
+
+            }
             //Jump type 2: player is pressing button in direction opposite to wall.
             else if (Mathf.Sign(orientation.x) == Mathf.Sign(wallNormal.x))
                 rb2d.velocity = new Vector2(WallJumpVectorWhenOtherDir * wallNormal.x, 1) * jumpForce;
@@ -96,12 +99,11 @@ public class PlayerMovement : TilemapController
             int jumpSoundID = EazySoundManager.PlaySound(jumpSoundClip, 0.5f);
             rb2d.velocity += new Vector2(0, 1) * jumpForce;
             
-            int wall = isAnyTileOnWall();
-
+            int wall = isAnyTileOnWall2();
             if(wall == 1 && Input.GetButton("Left")){
                 wallNormal = new Vector2(1,0);
                 PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
-            }else if(wall == 0&& Input.GetButton("Right")){
+            }else if(wall == 0 && Input.GetButton("Right")){
                 wallNormal = new Vector2(-1, 0);
                 PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
             }else{
@@ -281,7 +283,6 @@ public class PlayerMovement : TilemapController
                 tilemap.SetTile(PlayerController.instance.getLastAddedTile().position, null);
                 PlayerController.instance.deleteLastAddedTile();
                 PlayerController.instance.boxesInInventory++;
-                UIController.instance.increaseBoxesUnused();
                 
                LAT.transform.position = gameObject.transform.position + PlayerController.instance.getLastAddedTile().position;
            
@@ -296,7 +297,6 @@ public class PlayerMovement : TilemapController
                     {
                         newTile(new Vector3Int(0, 1, 0));
                         PlayerController.instance.boxesInInventory --;
-                        UIController.instance.decreaseBoxesUnused();
                         //PlayerController.instance.state = PlayerController.State.NORMAL;
                         PlayerController.instance.setWButton(0);
                         
@@ -312,7 +312,6 @@ public class PlayerMovement : TilemapController
                     {
                         newTile(new Vector3Int(1, 0, 0));
                         PlayerController.instance.boxesInInventory --;
-                        UIController.instance.decreaseBoxesUnused();
                         //PlayerController.instance.state = PlayerController.State.NORMAL;
                         PlayerController.instance.setDButton(0);
                     }
@@ -327,7 +326,6 @@ public class PlayerMovement : TilemapController
                     {
                         newTile(new Vector3Int(-1, 0, 0));
                         PlayerController.instance.boxesInInventory --;
-                        UIController.instance.decreaseBoxesUnused();
                         //PlayerController.instance.state = PlayerController.State.NORMAL;
                         PlayerController.instance.setAButton(0);
                     }
@@ -342,7 +340,6 @@ public class PlayerMovement : TilemapController
                     {
                         newTile(new Vector3Int(0, -1, 0));
                         PlayerController.instance.boxesInInventory --;
-                        UIController.instance.decreaseBoxesUnused();
                         //PlayerController.instance.state = PlayerController.State.NORMAL;
                         PlayerController.instance.setSButton(0);
                     }
@@ -383,15 +380,6 @@ public class PlayerMovement : TilemapController
         return false;
     }
 
-    void wallSlideUpdate()
-    {
-
-        if(rb2d.velocity.y < -maxWallSlideSpeed)
-        {
-            rb2d.velocity.Set(rb2d.velocity.x, -maxWallSlideSpeed);
-        }
-        //Check for when no longer touching wall
-    }
 
 	
 	void OnCollisionEnter2D(Collision2D other)
@@ -433,7 +421,6 @@ public class PlayerMovement : TilemapController
             //blockOptained sound played
             int lavaDeathSoundID = EazySoundManager.PlaySound(blockOptainedSoundClip, 0.5f);
             PlayerController.instance.boxesInInventory ++;
-            UIController.instance.increaseBoxesUnused();
             orientation = new Vector3(0, 0, 0);
             //PlayerController.instance.state = PlayerController.State.ADD_TILE;
             chooseNextBox = false;
@@ -446,20 +433,14 @@ public class PlayerMovement : TilemapController
             //lava sound played
             int lavaDeathSoundID = EazySoundManager.PlaySound(lavaDeathSoundClip, 0.5f);
 
-            Debug.Log("Player sent back");
-            rb2d.transform.position = currentCheckPoint.transform.position;
+            //Debug.Log("Player sent back");
+            //rb2d.transform.position = currentCheckPoint.transform.position;
+            
 
             
-            //PlayerController.instance.resetLevel();
+            PlayerController.instance.resetLevel();
         }
-        if (other.tag == "checkPoint")
-        {
-            Debug.Log("CheckPoint reached");
-            currentCheckPoint = other.gameObject;
-            //lava sound played
-            //int lavaDeathSoundID = EazySoundManager.PlaySound(lavaDeathSoundClip, 0.5f);
-            //PlayerController.instance.resetLevel();
-        }
+        
     }
 
 
@@ -475,7 +456,7 @@ public class PlayerMovement : TilemapController
             tilemapWorld.x += 0.1f;
 
             RaycastHit2D hit = Physics2D.Raycast(new Vector2(tilemapWorld.x, tilemapWorld.y),
-                                                Vector2.right, 0.8f);
+                                                Vector2.right, 0.7f);
                                                 
             Debug.DrawRay(new Vector2(tilemapWorld.x, tilemapWorld.y), Vector2.right , Color.green,0.1f);
             
@@ -487,6 +468,7 @@ public class PlayerMovement : TilemapController
         return false;
     }
 
+    //check f plattform or player is on ether side
     int isAnyTileOnWall(){
         foreach (Cube tile in PlayerController.instance.getPlayerTiles())
         {
@@ -495,6 +477,21 @@ public class PlayerMovement : TilemapController
             }
             
             else if(!isEmptyTilePlace(new Vector3Int(tile.position.x+1, tile.position.y , 0), gameObject.tag)){
+                return 0;
+            }
+        }
+        return -1;
+    }
+
+    //To check if only plattform on ether side.
+    int isAnyTileOnWall2(){
+        foreach (Cube tile in PlayerController.instance.getPlayerTiles())
+        {
+            if(!isEmptyTilePlaceForJump(new Vector3Int(tile.position.x-1, tile.position.y , 0), gameObject.tag)){
+                return 1;
+            }
+            
+            else if(!isEmptyTilePlaceForJump(new Vector3Int(tile.position.x+1, tile.position.y , 0), gameObject.tag)){
                 return 0;
             }
         }
