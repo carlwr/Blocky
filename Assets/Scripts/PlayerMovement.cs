@@ -40,6 +40,11 @@ public class PlayerMovement : TilemapController
     [Range(0,1)]public float WallJumpVectorWhenTowards ;
     [Range(0,1)]public float WallJumpVectorWhenOtherDir;
 
+    public GameObject head;
+    public Sprite defaultHeadSprite;
+    public Sprite NoSignalHeadSprite;
+    public Sprite noiseHeadSprite;
+    
     
     override protected void Start()
     {
@@ -49,6 +54,7 @@ public class PlayerMovement : TilemapController
         int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
         LAT = GameObject.Find("player follow");
         player = FindObjectOfType<PlayerController>();
+        head.GetComponent<SpriteRenderer>().sprite = defaultHeadSprite;
     }
 
     void Update()
@@ -56,7 +62,7 @@ public class PlayerMovement : TilemapController
         switch (PlayerController.instance.state)
         {
             case PlayerController.State.WALL_SLIDE:
-                
+                //wallJumpUpdate();
             case PlayerController.State.NORMAL:
                 normalUpdate();
                 break;
@@ -120,10 +126,22 @@ public class PlayerMovement : TilemapController
         UIController.instance.jumpType.text = "";
     } 
 
+    void wallJumpUpdate()
+    {
+        if (head.GetComponent<SpriteRenderer>().sprite != noiseHeadSprite)
+                {
+                    head.GetComponent<SpriteRenderer>().sprite = noiseHeadSprite;
+                } 
+    }
+
 	void normalUpdate(){
         
-        
-		orientation = new Vector2(0,0);
+        if (head.GetComponent<SpriteRenderer>().sprite != defaultHeadSprite)
+        {
+            head.GetComponent<SpriteRenderer>().sprite = defaultHeadSprite;
+        }
+
+        orientation = new Vector2(0,0);
         //increase gravity for player on way down for feel
         if(rb2d.velocity.y < 0){
             rb2d.velocity += Vector2.up * Physics2D.gravity.y * (jumpMultiplier - 1) * Time.fixedDeltaTime;
@@ -233,9 +251,14 @@ public class PlayerMovement : TilemapController
 	}
 	void addTileUpdate(){
 
+        if (head.GetComponent<SpriteRenderer>().sprite != NoSignalHeadSprite)
+        {
+            head.GetComponent<SpriteRenderer>().sprite = NoSignalHeadSprite;
+
+        }
 
         //When we are adding a tile, make everything slow-motion!
-        if(Time.timeScale == 1.0f)
+        if (Time.timeScale == 1.0f)
         {
             Time.timeScale = 0.1f;
             Time.fixedDeltaTime = 0.02f * Time.timeScale;
