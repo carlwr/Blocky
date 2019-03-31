@@ -14,6 +14,8 @@ public class BossScript : MonoBehaviour
     public bool startScene;
     public GameObject cam;
     public string text;
+
+    private bool stuck;
     // Start is called before the first frame update
     void Start()
     {
@@ -29,13 +31,20 @@ public class BossScript : MonoBehaviour
         if(startScene){
             
             cam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
-            UIController.instance.bossText.text = text;
+            UIController.instance.conversation.text = text;
+            UIController.instance.setConversationPosition(new Vector3(transform.position.x+5, transform.position.y + 2, 0));
+       
             StartCoroutine(conversation());
             
         }
         else{
         cam.GetComponent<CinemachineVirtualCamera>().Priority = 0;
-        rb2d.velocity = new Vector3(speed,0,0);
+        if(stuck){
+            rb2d.velocity = new Vector3(speed,jumpForce, 0);
+        }
+        else{
+            rb2d.velocity = new Vector3(speed,0,0);
+        }
         setOnFire();
 
         }
@@ -44,7 +53,7 @@ public class BossScript : MonoBehaviour
     IEnumerator conversation(){
         
         yield return new WaitForSeconds(5);
-        UIController.instance.bossText.text = "";
+        UIController.instance.conversation.text = "";
         startScene = false;
 
     }
@@ -53,21 +62,25 @@ public class BossScript : MonoBehaviour
         if(collisionInfo.collider.tag == "Player"){
             PlayerController.instance.resetLevel();  
         }
-        if(collisionInfo.collider.tag == "Plattform"){
-           // print(other.name);
-            rb2d.velocity = new Vector3(0,rb2d.velocity.y,0);
-            rb2d.AddForce(new Vector3(0,jumpForce, 0));
-        }
     }
+
     void OnTriggerStay2D(Collider2D other)
     {
-        if(other.tag == "Plattform"){
+        if(other.name == "Plattform"){
            // print(other.name);
-            rb2d.velocity = new Vector3(0,rb2d.velocity.y,0);
-            rb2d.AddForce(new Vector3(0,jumpForce, 0));
+           stuck = true;
         }
-
     }
+    void OnTriggerExit2D(Collider2D other)
+    {
+        
+        if(other.name == "Plattform"){
+           // print(other.name);
+           stuck = false;
+        }
+        
+    }
+    
 
     void setOnFire(){
         for(int i = (int)(transform.position.y)-20 ; i < (int)(transform.position.y) + 20; i ++){
