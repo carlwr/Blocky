@@ -6,6 +6,12 @@ using UnityEngine.SceneManagement;
 
 public class LevelLoader : MonoBehaviour
 {
+
+    public void LoadMainMenu()
+    {
+        //LOAD MAIN MENU.
+    }
+
     public void LoadLevelOne()
     {
         SceneManager.LoadScene("DagmarLevel1");
