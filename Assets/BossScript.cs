@@ -17,12 +17,14 @@ public class BossScript : MonoBehaviour
     public string text;
 
     public AudioClip talk;
+    public AudioClip bossSound;
     private bool stuck;
     // Start is called before the first frame update
     void Start()
     {
         startScene = true;
         
+        int backgroundMusicID = EazySoundManager.PlayMusic(bossSound, 0.35f, true, false, 1, 1);
         EazySoundManager.PlaySound(talk, 0.5f);
         rb2d = GetComponent<Rigidbody2D>();
         fire = GameObject.Find("Obstacles").GetComponent<Tilemap>();

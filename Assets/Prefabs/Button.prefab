@@ -99,9 +99,10 @@ MonoBehaviour:
     type: 3}
   buttonNotPressed: {fileID: 683194566548981139, guid: 6c7ab1bb82863e04991f4fdd06c8afee,
     type: 3}
-  bridgeOpen: {fileID: 11400000, guid: 8ee984d4eec63a1498b6788c3dfdbbc0, type: 2}
-  bridgeClosed: {fileID: 11400000, guid: e1a7d4951535ec24da1cfe6e1e6e969b, type: 2}
-  cooldown: 7
+  bridgeOpen: {fileID: 11400000, guid: 7bfd563e4fbb8e643ab82e35a4f107f7, type: 2}
+  bridgeClosed: {fileID: 11400000, guid: fa8b207de513a50488ca05b632f99c91, type: 2}
+  cooldown: 2
+  buttonSound: {fileID: 8300000, guid: 99a2b8589aa8b004db4710d7fcf6380c, type: 3}
 --- !u!61 &4385095205501295942
 BoxCollider2D:
   m_ObjectHideFlags: 0

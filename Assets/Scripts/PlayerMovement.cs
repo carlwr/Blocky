@@ -34,7 +34,7 @@ public class PlayerMovement : TilemapController
 	private bool canJump;
 	private Vector2 orientation;
     private PlayerController player;
-
+    public bool backMusic = true;
     public GameObject currentCheckPoint;
 
     [Range(0,1)]public float WallJumpVectorWhenTowards ;
@@ -51,7 +51,10 @@ public class PlayerMovement : TilemapController
         transform.position = GameMaster.instance.lastCheckpointPos;
         base.Start();
         rb2d = GetComponent<Rigidbody2D>();
-        int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
+        if(backMusic){
+            int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
+
+        }
         LAT = GameObject.Find("player follow");
         player = FindObjectOfType<PlayerController>();
         head.GetComponent<SpriteRenderer>().sprite = defaultHeadSprite;
