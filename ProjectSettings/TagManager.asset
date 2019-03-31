@@ -10,6 +10,7 @@ TagManager:
   - Pickups
   - conversationAgents
   - nextTiles
+  - enemy
   layers:
   - Default
   - TransparentFX

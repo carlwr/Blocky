@@ -12,7 +12,7 @@ public class GameMaster : MonoBehaviour
     private TileBase[] emptyPlayer;
 
     public Vector3 lastCheckpointPos = new Vector3(0, 0, 0);
-    public int playerBoxesCount = 0;
+    public int playerBoxesCount = 6;
     public TileBase[] pickups;// = new Tilemap();
     public BoundsInt pickupsBounds;
 

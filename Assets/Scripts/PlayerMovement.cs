@@ -397,6 +397,11 @@ public class PlayerMovement : TilemapController
                 PlayerController.instance.state = PlayerController.State.WALL_SLIDE;
             }
         }
+
+        if(other.collider.tag == "enemy"){
+            
+            PlayerController.instance.resetLevelToCheckpoint();
+        }
 	}
  
    
@@ -437,6 +442,7 @@ public class PlayerMovement : TilemapController
         }
         
     }
+
 
 
 	
