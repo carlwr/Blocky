@@ -25,10 +25,11 @@ public class BossScript : MonoBehaviour
             PlayerController.instance.resetLevel();  
         }
     }
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         if(other.tag == "Plattform"){
             print(other.name);
+            rb2d.velocity = new Vector3(0,rb2d.velocity.y,0);
             rb2d.AddForce(new Vector3(0,jumpForce, 0));
         }
 
