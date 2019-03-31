@@ -99,9 +99,9 @@ MonoBehaviour:
     type: 3}
   buttonNotPressed: {fileID: 683194566548981139, guid: 6c7ab1bb82863e04991f4fdd06c8afee,
     type: 3}
-  bridgeOpen: {fileID: 11400000, guid: 7bfd563e4fbb8e643ab82e35a4f107f7, type: 2}
+  bridgeOpen: {fileID: 11400000, guid: 8ee984d4eec63a1498b6788c3dfdbbc0, type: 2}
   bridgeClosed: {fileID: 11400000, guid: fa8b207de513a50488ca05b632f99c91, type: 2}
-  cooldown: 2
+  cooldown: 300
   buttonSound: {fileID: 8300000, guid: 99a2b8589aa8b004db4710d7fcf6380c, type: 3}
 --- !u!61 &4385095205501295942
 BoxCollider2D:
@@ -116,7 +116,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.014915466, y: -0.26852226}
+  m_Offset: {x: 0.07986832, y: -0.09531593}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -127,5 +127,5 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.73147583, y: 0.46295547}
+  m_Size: {x: 1.2077866, y: 0.80936813}
   m_EdgeRadius: 0
