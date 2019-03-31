@@ -26,10 +26,6 @@ public class obstacleMovement : MonoBehaviour
     {
         rb2d.velocity = orientation;
         orientation = new Vector2(0, 0);
-    }
-
-    void Update()
-    {
         if (Time.time >= time + rangeInSeconds)
         {
             obstacleTurnsAround = !obstacleTurnsAround;
@@ -38,34 +34,39 @@ public class obstacleMovement : MonoBehaviour
         if (upAndDown)
         {
             if (obstacleTurnsAround)
-            { 
-                transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y+180, transform.rotation.z,0);
-               
+            {
+                transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y + 180, transform.rotation.z, 0);
+
                 orientation += new Vector2(0, -1) * speed;
             }
             else
             {
-                
-                transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.z,0);
+
+                transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.z, 0);
                 orientation += new Vector2(0, 1) * speed;
             }
-            
+
         }
         else
-        {            
-            
+        {
+
             if (obstacleTurnsAround)
             {
-                transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y+180, transform.rotation.z,0);
+                transform.rotation = new Quaternion(transform.rotation.x, transform.rotation.y + 180, transform.rotation.z, 0);
                 orientation += new Vector2(1, 0) * speed;
             }
             else
             {
-                
-                transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.z,0);
+
+                transform.rotation = new Quaternion(transform.rotation.x, 0, transform.rotation.z, 0);
                 orientation += new Vector2(-1, 0) * speed;
             }
         }
+    }
+
+    void Update()
+    {
+        
          
     }
 }

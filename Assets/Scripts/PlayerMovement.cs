@@ -25,6 +25,9 @@ public class PlayerMovement : TilemapController
     public AudioClip blockOptainedSoundClip;
     public AudioClip backgroundMusic;
 
+    public GameObject escapeMenu;
+    public bool escapeMenuOpen = false;
+
 
 
     private float addTileAddOn = 0.05f;
@@ -34,7 +37,7 @@ public class PlayerMovement : TilemapController
 	private bool canJump;
 	private Vector2 orientation;
     private PlayerController player;
-
+    public bool backMusic = true;
     public GameObject currentCheckPoint;
 
     [Range(0,1)]public float WallJumpVectorWhenTowards ;
@@ -51,7 +54,10 @@ public class PlayerMovement : TilemapController
         transform.position = GameMaster.instance.lastCheckpointPos;
         base.Start();
         rb2d = GetComponent<Rigidbody2D>();
-        int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
+        if(backMusic){
+
+            int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
+        }
         LAT = GameObject.Find("player follow");
         player = FindObjectOfType<PlayerController>();
         head.GetComponent<SpriteRenderer>().sprite = defaultHeadSprite;
@@ -185,9 +191,22 @@ public class PlayerMovement : TilemapController
             
         }
 
-        
+        if (Input.GetKeyDown("escape"))
+        {
+            if (escapeMenuOpen)
+            {
+                escapeMenu.SetActive(false);
+            }
+            else
+            {
+                escapeMenu.SetActive(true);
+            }
+            escapeMenuOpen = !escapeMenuOpen;
+        }
 
-        
+
+
+
         if (Input.GetButton("Left"))
         {
             if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE  && wallNormal == new Vector2(1,0)){

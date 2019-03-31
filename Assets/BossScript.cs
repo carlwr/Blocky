@@ -27,6 +27,7 @@ public class BossScript : MonoBehaviour
         rb2d = GetComponent<Rigidbody2D>();
         fire = GameObject.Find("Obstacles").GetComponent<Tilemap>();
 
+
         
     }
 

@@ -52,6 +52,6 @@ public class RocketScript : MonoBehaviour
 
     IEnumerator changeScene(){
         yield return new WaitForSeconds(waitForNextScene);
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(3);
     }
 }

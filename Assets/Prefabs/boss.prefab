@@ -316,6 +316,7 @@ MonoBehaviour:
   cam: {fileID: 1113747352}
   text: Get over here your little Twat!
   talk: {fileID: 8300000, guid: 084813186fdb9104a93ca9e70feac883, type: 3}
+  bossSound: {fileID: 8300000, guid: 2f2736cc96b7b1b49bb5756443c2f271, type: 3}
 --- !u!61 &1218631273166285801
 BoxCollider2D:
   m_ObjectHideFlags: 0

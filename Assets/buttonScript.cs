@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using Hellmade.Sound;
 
 public class buttonScript : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class buttonScript : MonoBehaviour
     public TileBase bridgeClosed;
     public int cooldown;
     TilemapCollider2D tileMapCollider;
+    public AudioClip buttonSound;
     
     void Start()
     {
@@ -25,6 +27,8 @@ public class buttonScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {   
+            EazySoundManager.PlaySound(buttonSound, 0.5f);
+
             GetComponent<SpriteRenderer>().sprite = buttonPressed;
 
             tilemapObject.tag = "Plattform";

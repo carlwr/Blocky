@@ -12,6 +12,7 @@ TagManager:
   - nextTiles
   - enemy
   - fire
+  - bossScene
   layers:
   - Default
   - TransparentFX

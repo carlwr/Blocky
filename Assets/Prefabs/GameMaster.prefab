@@ -43,7 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7d5ec9b7799a1542bcc859246922dd6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lastCheckpointPos: {x: -30, y: 0, z: 0}
+  playerReference: {fileID: 0}
+  pickupsReference: {fileID: 0}
+  lastCheckpointPos: {x: -55, y: 0, z: 0}
   playerBoxesCount: 0
   pickups: []
   pickupsBounds:
