@@ -7,9 +7,16 @@ using UnityEngine.SceneManagement;
 public class LevelLoader : MonoBehaviour
 {
 
+    public bool isCreditScene = false;
+
+    private IEnumerator goToMenu()
+    {
+        yield return new WaitForSeconds(5);
+    }
+
     public void LoadMainMenu()
     {
-        //LOAD MAIN MENU.
+        SceneManager.LoadScene("Menu");
     }
 
     public void LoadLevelOne()
@@ -19,18 +26,21 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevelTwo()
     {
-        //LOAD LEVEL TWO
+        SceneManager.LoadScene("Level 2");
     }
 
     public void LoadLevelThree()
     {
-        //LOAD LEVEL THREE
+        SceneManager.LoadScene("FinalLevel");
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        if (isCreditScene)
+        {
+            StartCoroutine(goToMenu());
+        }
     }
 
     // Update is called once per frame
