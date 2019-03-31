@@ -172,6 +172,12 @@ public class PlayerMovement : TilemapController
         else{
             canJump = false;
         }
+        if(isAnyTileOnWall2() == -1){
+            if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE)
+            {
+                PlayerController.instance.state = PlayerController.State.NORMAL;
+            }
+        }
         //Make it not slow motion as soon as the block has been selected and state is normal again.
         if(Time.timeScale != 1.0f)
         {
