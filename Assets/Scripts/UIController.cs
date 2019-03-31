@@ -14,6 +14,7 @@ public class UIController : MonoBehaviour
     public Vector3 conversationPosition;
     public TextMeshProUGUI boxesUnused;
 
+    public TextMeshProUGUI bossText;
     public TextMeshProUGUI conversation;
 
     
