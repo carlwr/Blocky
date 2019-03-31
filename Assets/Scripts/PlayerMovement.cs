@@ -25,6 +25,9 @@ public class PlayerMovement : TilemapController
     public AudioClip blockOptainedSoundClip;
     public AudioClip backgroundMusic;
 
+    public GameObject escapeMenu;
+    public bool escapeMenuOpen = false;
+
 
 
     private float addTileAddOn = 0.05f;
@@ -188,9 +191,22 @@ public class PlayerMovement : TilemapController
             
         }
 
-        
+        if (Input.GetKeyDown("escape"))
+        {
+            if (escapeMenuOpen)
+            {
+                escapeMenu.SetActive(false);
+            }
+            else
+            {
+                escapeMenu.SetActive(true);
+            }
+            escapeMenuOpen = !escapeMenuOpen;
+        }
 
-        
+
+
+
         if (Input.GetButton("Left"))
         {
             if(PlayerController.instance.state == PlayerController.State.WALL_SLIDE  && wallNormal == new Vector2(1,0)){
