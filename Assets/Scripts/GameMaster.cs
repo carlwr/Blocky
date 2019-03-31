@@ -28,9 +28,6 @@ public class GameMaster : MonoBehaviour
     {
         if(instance == null){
             instance = this;
-            DontDestroyOnLoad(instance);
-        }else{
-            Destroy(gameObject);
         }
 
         emptyPlayer = playerReference.GetComponent<Tilemap>().GetTilesBlock(GameObject.FindGameObjectWithTag("Player").GetComponent<Tilemap>().cellBounds); ;
