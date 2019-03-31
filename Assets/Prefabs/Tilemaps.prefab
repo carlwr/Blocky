@@ -168,7 +168,7 @@ Tilemap:
       m_TileColorIndex: 0
       m_ObjectToInstantiate: {fileID: 0}
       m_TileFlags: 0
-      m_ColliderType: 2
+      m_ColliderType: 1
   m_AnimatedTiles: {}
   m_TileAssetArray:
   - m_RefCount: 1
@@ -328,7 +328,7 @@ MonoBehaviour:
   maxSpeedX: 15
   maxSpeedY: 25
   jumpForce: 25
-  bodyBase: {fileID: 11400000, guid: 11b405c2dcdfee74da15b26a433ac161, type: 2}
+  bodyBase: {fileID: 11400000, guid: 17a14701f666b734eb0952464299b75a, type: 2}
   maxWallSlideSpeed: 2
   jumpMultiplier: 6.3
   interruptedJumpMultiplier: 51.8
@@ -340,6 +340,9 @@ MonoBehaviour:
   blockOptainedSoundClip: {fileID: 8300000, guid: 27a309dd7b0ed95438b236cf3739d054,
     type: 3}
   backgroundMusic: {fileID: 8300000, guid: 7731750f3a3d5cb4a89c729e8a6cab7c, type: 3}
+  escapeMenu: {fileID: 0}
+  escapeMenuOpen: 0
+  backMusic: 1
   currentCheckPoint: {fileID: 0}
   WallJumpVectorWhenTowards: 0.5
   WallJumpVectorWhenOtherDir: 0.2
@@ -364,23 +367,9 @@ CompositeCollider2D:
   m_GeometryType: 1
   m_GenerationType: 0
   m_EdgeRadius: 0
-  m_ColliderPaths:
-  - m_Collider: {fileID: 3022236126367569814}
-    m_ColliderPaths:
-    - - X: 9000000
-        Y: 9000000
-      - X: 0
-        Y: 9000000
-      - X: 0
-        Y: 0
-      - X: 9000000
-        Y: 0
+  m_ColliderPaths: []
   m_CompositePaths:
-    m_Paths:
-    - - {x: 0.90000004, y: 0.90000004}
-      - {x: 0, y: 0.90000004}
-      - {x: 0, y: 0}
-      - {x: 0.90000004, y: 0}
+    m_Paths: []
   m_VertexDistance: 0.0005
 --- !u!1 &3022236126431573283
 GameObject:
