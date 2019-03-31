@@ -52312,6 +52312,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -3364212895787285126, guid: 6c7ab1bb82863e04991f4fdd06c8afee,
         type: 3}
+    - target: {fileID: 3022236126367569817, guid: 45bcb75357ee98146bbf4fcdde0d2044,
+        type: 3}
+      propertyPath: backgroundMusic
+      value: 
+      objectReference: {fileID: 8300000, guid: 2f2736cc96b7b1b49bb5756443c2f271, type: 3}
     - target: {fileID: 4105301282605215226, guid: 45bcb75357ee98146bbf4fcdde0d2044,
         type: 3}
       propertyPath: m_Tiles.Array.size
