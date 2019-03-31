@@ -45,8 +45,5 @@ public class RocketScript : MonoBehaviour
         Vector3 pos = gameObject.transform.position;
         gameObject.transform.position =  pos + new Vector3(0,speed,0) * Time.deltaTime;
     }
-
-    changeScene(){
-        SceneManager.LoadScene(nextScene, LoadSceneMode.Additive);
-    }
+    
 }
