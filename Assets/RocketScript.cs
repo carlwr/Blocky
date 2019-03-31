@@ -8,9 +8,11 @@ public class RocketScript : MonoBehaviour
 {
     public GameObject player;
     public GameObject cam;
+    public string nextScene;
     public float acceleration;
     private float speed = 0;
     private bool activated;
+
 
 
     void Start()
@@ -33,7 +35,8 @@ public class RocketScript : MonoBehaviour
     void FixedUpdate()
     {
         if(activated){
-            liftOff();    
+            liftOff();
+
         }
     }
 
@@ -41,5 +44,9 @@ public class RocketScript : MonoBehaviour
         speed += acceleration;
         Vector3 pos = gameObject.transform.position;
         gameObject.transform.position =  pos + new Vector3(0,speed,0) * Time.deltaTime;
+    }
+
+    changeScene(){
+        SceneManager.LoadScene(nextScene, LoadSceneMode.Additive);
     }
 }
