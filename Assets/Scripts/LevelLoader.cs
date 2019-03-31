@@ -9,9 +9,10 @@ public class LevelLoader : MonoBehaviour
 
     public bool isCreditScene = false;
 
-    private IEnumerator goToMenu()
+    IEnumerator goToMenu()
     {
         yield return new WaitForSeconds(5);
+        LoadMainMenu();
     }
 
     public void LoadMainMenu()
@@ -26,12 +27,12 @@ public class LevelLoader : MonoBehaviour
 
     public void LoadLevelTwo()
     {
-        SceneManager.LoadScene("Level 2");
+        SceneManager.LoadScene(3);
     }
 
     public void LoadLevelThree()
     {
-        SceneManager.LoadScene("FinalLevel");
+        SceneManager.LoadScene(4);
     }
 
     // Start is called before the first frame update
