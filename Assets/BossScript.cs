@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 using Cinemachine;
+using Hellmade.Sound;
 
 public class BossScript : MonoBehaviour
 {
@@ -15,12 +16,16 @@ public class BossScript : MonoBehaviour
     public GameObject cam;
     public string text;
 
+    public AudioClip talk;
     private bool stuck;
     // Start is called before the first frame update
     void Start()
     {
         startScene = true;
+        
+        EazySoundManager.PlaySound(talk, 0.5f);
         rb2d = GetComponent<Rigidbody2D>();
+        fire = GameObject.Find("Obstacles").GetComponent<Tilemap>();
 
         
     }
