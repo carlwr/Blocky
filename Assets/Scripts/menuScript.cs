@@ -17,13 +17,12 @@ public class menuScript : MonoBehaviour
         
     }
 
-
     public void quitGame()
     {
         Application.Quit();
     }
     public void loadLevelScene()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene(0);
     }
 }
