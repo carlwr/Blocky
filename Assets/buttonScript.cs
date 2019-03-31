@@ -27,7 +27,7 @@ public class buttonScript : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {   
-            int backgroundMusicID = EazySoundManager.PlayMusic(buttonSound, 0.35f, false, false, 1, 1);
+            EazySoundManager.PlaySound(buttonSound, 0.5f);
 
             GetComponent<SpriteRenderer>().sprite = buttonPressed;
 

@@ -52,8 +52,8 @@ public class PlayerMovement : TilemapController
         base.Start();
         rb2d = GetComponent<Rigidbody2D>();
         if(backMusic){
-            int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
 
+            int backgroundMusicID = EazySoundManager.PlayMusic(backgroundMusic, 0.35f, true, false, 1, 1);
         }
         LAT = GameObject.Find("player follow");
         player = FindObjectOfType<PlayerController>();

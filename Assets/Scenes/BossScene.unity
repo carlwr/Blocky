@@ -1614,11 +1614,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Button
       objectReference: {fileID: 0}
-    - target: {fileID: 4385095205501295802, guid: 007d81a54120bbd49991ecd5e3dc7a4f,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4385095205501295943, guid: 007d81a54120bbd49991ecd5e3dc7a4f,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1676,26 +1671,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4385095205501295801, guid: 007d81a54120bbd49991ecd5e3dc7a4f,
         type: 3}
-      propertyPath: bridgeOpen
-      value: 
-      objectReference: {fileID: 11400000, guid: 7bfd563e4fbb8e643ab82e35a4f107f7,
-        type: 2}
-    - target: {fileID: 4385095205501295801, guid: 007d81a54120bbd49991ecd5e3dc7a4f,
-        type: 3}
-      propertyPath: bridgeClosed
-      value: 
-      objectReference: {fileID: 11400000, guid: fa8b207de513a50488ca05b632f99c91,
-        type: 2}
-    - target: {fileID: 4385095205501295801, guid: 007d81a54120bbd49991ecd5e3dc7a4f,
-        type: 3}
       propertyPath: tilemapObject
       value: 
       objectReference: {fileID: 492687156}
-    - target: {fileID: 4385095205501295801, guid: 007d81a54120bbd49991ecd5e3dc7a4f,
-        type: 3}
-      propertyPath: cooldown
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 007d81a54120bbd49991ecd5e3dc7a4f, type: 3}
 --- !u!1001 &573173540
@@ -60261,7 +60239,17 @@ PrefabInstance:
         type: 3}
       propertyPath: backgroundMusic
       value: 
-      objectReference: {fileID: 8300000, guid: 2f2736cc96b7b1b49bb5756443c2f271, type: 3}
+      objectReference: {fileID: 8300000, guid: 9f0bf7b9dec095b4098f10c597ee2d7d, type: 3}
+    - target: {fileID: 3022236126367569817, guid: 45bcb75357ee98146bbf4fcdde0d2044,
+        type: 3}
+      propertyPath: backMusic
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3022236126367569817, guid: 45bcb75357ee98146bbf4fcdde0d2044,
+        type: 3}
+      propertyPath: bossSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 9f0bf7b9dec095b4098f10c597ee2d7d, type: 3}
     - target: {fileID: 4105301282605215226, guid: 45bcb75357ee98146bbf4fcdde0d2044,
         type: 3}
       propertyPath: m_Tiles.Array.size
@@ -68686,7 +68674,7 @@ GameObject:
   - component: {fileID: 1255974731}
   m_Layer: 0
   m_Name: BossSceneManager
-  m_TagString: Untagged
+  m_TagString: bossScene
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68704,6 +68692,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   boss: {fileID: 1218631273166285807, guid: 6c804dcf58e30d2449656d2c4cfb1584, type: 3}
+  bossSound: {fileID: 8300000, guid: 2f2736cc96b7b1b49bb5756443c2f271, type: 3}
 --- !u!61 &1255974732
 BoxCollider2D:
   m_ObjectHideFlags: 0
