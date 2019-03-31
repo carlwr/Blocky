@@ -11,6 +11,7 @@ TagManager:
   - conversationAgents
   - nextTiles
   - enemy
+  - fire
   layers:
   - Default
   - TransparentFX

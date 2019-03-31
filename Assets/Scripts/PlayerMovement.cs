@@ -463,6 +463,14 @@ public class PlayerMovement : TilemapController
            
             PlayerController.instance.resetLevelToCheckpoint();
         }
+        if (other.tag == "fire")
+        {
+
+            //lava sound played
+            int lavaDeathSoundID = EazySoundManager.PlaySound(lavaDeathSoundClip, 0.5f);
+           
+            PlayerController.instance.resetLevel();
+        }
         
     }
 
