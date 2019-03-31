@@ -24,6 +24,6 @@ public class menuScript : MonoBehaviour
     }
     public void loadLevelScene()
     {
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene(0);
     }
 }
