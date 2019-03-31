@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using Cinemachine;
 
@@ -10,8 +11,10 @@ public class RocketScript : MonoBehaviour
     public GameObject cam;
     public string nextScene;
     public float acceleration;
+    public int waitForNextScene;
     private float speed = 0;
     private bool activated;
+
 
 
 
@@ -29,6 +32,7 @@ public class RocketScript : MonoBehaviour
             player.SetActive(true);
             other.transform.position = transform.position;
             other.gameObject.SetActive(false);
+            StartCoroutine(changeScene());
         }
     }
 
@@ -45,5 +49,13 @@ public class RocketScript : MonoBehaviour
         Vector3 pos = gameObject.transform.position;
         gameObject.transform.position =  pos + new Vector3(0,speed,0) * Time.deltaTime;
     }
+<<<<<<< HEAD
     
+=======
+
+    IEnumerator changeScene(){
+        yield return new WaitForSeconds(waitForNextScene);
+        SceneManager.LoadScene(nextScene, LoadSceneMode.Additive);
+    }
+>>>>>>> 8ba852c557d21a7ccf9c3c5d590700ae125a2c04
 }

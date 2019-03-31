@@ -375,7 +375,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 598340725429165713}
   cam: {fileID: 598340724699287630}
+  nextScene: 
   acceleration: 0.01
+  waitForNextScene: 7
 --- !u!212 &598340725619174658
 SpriteRenderer:
   m_ObjectHideFlags: 0
