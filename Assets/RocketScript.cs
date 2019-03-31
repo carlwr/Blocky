@@ -9,7 +9,7 @@ public class RocketScript : MonoBehaviour
 {
     public GameObject player;
     public GameObject cam;
-    public string nextScene;
+    public int nextScene;
     public float acceleration;
     public int waitForNextScene;
     private float speed = 0;
