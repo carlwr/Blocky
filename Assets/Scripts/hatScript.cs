@@ -37,6 +37,7 @@ public class hatScript : MonoBehaviour
             cam.GetComponent<CinemachineVirtualCamera>().Priority = 11;
             drPhilPlayer.SetActive(true);
             other.gameObject.SetActive(false);
+            StartCoroutine(goToCredits());
  
         }
     }
