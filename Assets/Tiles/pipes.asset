@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: pipes
   m_EditorClassIdentifier: 
   m_Sprites:
-  - {fileID: -6534108063791482099, guid: 852c8f2b029d0524c89bde5645dad6cc, type: 3}
-  - {fileID: 6831538777194523189, guid: 852c8f2b029d0524c89bde5645dad6cc, type: 3}
+  - {fileID: 3765934515156708172, guid: 6c7ab1bb82863e04991f4fdd06c8afee, type: 3}
+  - {fileID: -6902278066223879412, guid: 6c7ab1bb82863e04991f4fdd06c8afee, type: 3}
   - {fileID: -7731753801457989743, guid: 852c8f2b029d0524c89bde5645dad6cc, type: 3}
   - {fileID: 8429546793459332004, guid: 6c7ab1bb82863e04991f4fdd06c8afee, type: 3}
   - {fileID: 4805952292056405818, guid: 6c7ab1bb82863e04991f4fdd06c8afee, type: 3}
