@@ -4086,7 +4086,7 @@ PrefabInstance:
     - target: {fileID: 4765533845906297844, guid: b9a5db09e5f37c74cbf92436d1c17ba2,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4765533845906297842, guid: b9a5db09e5f37c74cbf92436d1c17ba2,
         type: 3}
@@ -71729,16 +71729,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas
       objectReference: {fileID: 0}
-    - target: {fileID: 4128646800404762449, guid: d452edb0e94af6043a680d7a615695cd,
-        type: 3}
-      propertyPath: m_havePropertiesChanged
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4128646800404762449, guid: d452edb0e94af6043a680d7a615695cd,
-        type: 3}
-      propertyPath: m_isInputParsingRequired
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4128646798758790236, guid: d452edb0e94af6043a680d7a615695cd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -71843,6 +71833,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4128646800404762449, guid: d452edb0e94af6043a680d7a615695cd,
+        type: 3}
+      propertyPath: m_havePropertiesChanged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4128646800404762449, guid: d452edb0e94af6043a680d7a615695cd,
+        type: 3}
+      propertyPath: m_isInputParsingRequired
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4128646800396053191, guid: d452edb0e94af6043a680d7a615695cd,
         type: 3}
