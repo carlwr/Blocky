@@ -67,6 +67,8 @@ public class PlayerMovement : TilemapController
     {
         switch (PlayerController.instance.state)
         {
+            case PlayerController.State.STATIC:
+                break;
             case PlayerController.State.WALL_SLIDE:
                 //wallJumpUpdate();
             case PlayerController.State.NORMAL:

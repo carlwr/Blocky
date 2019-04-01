@@ -28,7 +28,8 @@ public class PlayerController : MonoBehaviour {
 	public enum State{
 		NORMAL,
 		ADD_TILE,
-        WALL_SLIDE
+        WALL_SLIDE,
+        STATIC
 	}
 
     public static PlayerController instance;

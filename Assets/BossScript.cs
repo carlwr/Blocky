@@ -22,7 +22,7 @@ public class BossScript : MonoBehaviour
     void Start()
     {
         startScene = true;
-        
+        PlayerController.instance.state = PlayerController.State.STATIC;
         EazySoundManager.PlaySound(talk, 0.5f);
         rb2d = GetComponent<Rigidbody2D>();
         fire = GameObject.Find("Obstacles").GetComponent<Tilemap>();
@@ -59,10 +59,20 @@ public class BossScript : MonoBehaviour
     IEnumerator conversation(){
         
         yield return new WaitForSeconds(5);
+        
         UIController.instance.conversation.text = "";
         startScene = false;
+        
+        StartCoroutine(playerAbleToMove());
 
     }
+
+    IEnumerator playerAbleToMove(){
+
+        yield return new WaitForSeconds(1);
+        PlayerController.instance.state = PlayerController.State.NORMAL;
+    }
+
     void OnCollisionEnter2D(Collision2D collisionInfo)
     {
         if(collisionInfo.collider.tag == "Player"){
